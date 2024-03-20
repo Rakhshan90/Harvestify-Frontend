@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import darkMode from '../dark_mode.png'
 import lightMode from '../light_mode.png'
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -22,9 +23,11 @@ const Navbar = () => {
                     <h2 className="font-bold text-black dark:text-white text-4xl">Harvestify</h2>
                     {/* container for menu items */}
                     <div className="hidden lg:flex space-x-8 font-bold">
-                        <a href="#" className="text-grayishBlue hover:text-teal-500">Features</a>
-                        <a href="#" className="text-grayishBlue hover:text-teal-500">Pricing</a>
-                        <a href="#" className="text-grayishBlue hover:text-teal-500">Resources</a>
+                        <Link to='/' className="text-grayishBlue hover:text-teal-500">Home</Link>
+                        <a href="#" className="text-grayishBlue hover:text-teal-500">Products</a>
+                        <a href="#" className="text-grayishBlue hover:text-teal-500">Create-Product</a>
+                        <a href="#" className="text-grayishBlue hover:text-teal-500">Auctions</a>
+                        <a href="#" className="text-grayishBlue hover:text-teal-500">Create-Auctions</a>
                     </div>
                 </div>
                 {/* container for login/signup */}
@@ -36,8 +39,12 @@ const Navbar = () => {
                     </div>
 
                     {/* login and sign up */}
-                    <a href="#" className="text-grayishBlue hover:text-teal-500">Login</a>
-                    <a href="#" className="bg-teal-500 text-white font-bold py-3 px-8 rounded-full hover:opacity-70">Sign up</a>
+                    <Link to='/login' className="text-grayishBlue hover:text-teal-500">
+                        Login
+                    </Link>
+                    <Link to='/register' className="bg-teal-500 text-white font-bold py-3 px-8 rounded-full hover:opacity-70">
+                        Sign up
+                    </Link>
                 </div>
 
                 {/* hamburger menu button */}
@@ -62,11 +69,17 @@ const Navbar = () => {
             <div id="menu" className={`absolute lg:hidden ${isOpen ? 'flex' : 'hidden'} z-50 left-6 right-6 top-40 p-6 
     rounded-lg bg-slate-700`}>
                 <div className="flex flex-col space-y-6 justify-center items-center font-bold text-white w-full">
-                    <a href="#" className="w-full text-center">Features</a>
-                    <a href="#" className="w-full text-center">Pricing</a>
-                    <a href="#" className="w-full text-center">Resources</a>
-                    <a href="#" className="w-full pt-6 border-t border-slate-400 text-center">Login</a>
-                    <a href="#" className="bg-teal-500 py-3 px-8 rounded-full text-center">Sign up</a>
+                    <Link to='/' className="w-full text-center">Home</Link>
+                    <a href="#" className="w-full text-center">Products</a>
+                    <a href="#" className="w-full text-center">Create-Product</a>
+                    <a href="#" className="w-full text-center">Auctions</a>
+                    <a href="#" className="w-full text-center">Create-Auctions</a>
+                    <Link to='/login' className="w-full pt-6 border-t border-slate-400 text-center">
+                        Login
+                    </Link>
+                    <Link to='/register' className="bg-teal-500 py-3 px-8 rounded-full text-center">
+                        Sign up
+                    </Link>
                 </div>
             </div>
 
