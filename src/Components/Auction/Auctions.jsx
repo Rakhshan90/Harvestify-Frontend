@@ -1,6 +1,8 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const Auctions = () => {
+    const navigate = useNavigate();
   return (
     <div className='min-h-screen mx-auto p-6 md:p-12 dark:bg-slate-800'>
         <div className="flex flex-col space-y-12">
@@ -49,7 +51,8 @@ const Auctions = () => {
                         <td className='px-6 py-4'>1599</td>
                         <td className='px-6 py-4'>null</td>
                         <td className='px-6 py-4'>
-                            <button className='bg-teal-500 text-white font-medium text-sm px-6 py-3 rounded-lg'>
+                            <button onClick={()=>navigate('/auction/:id')}
+                            className='bg-teal-500 text-white font-medium text-sm px-6 py-3 rounded-lg'>
                                 Enter
                             </button>
                         </td>
@@ -64,7 +67,8 @@ const Auctions = () => {
                         <td className='px-6 py-4'>249</td>
                         <td className='px-6 py-4'>null</td>
                         <td className='px-6 py-4'>
-                            <button className='bg-teal-500 text-white font-medium text-sm px-6 py-3 rounded-lg'>
+                            <button onClick={()=>navigate('/auction/:id')} 
+                            className='bg-teal-500 text-white font-medium text-sm px-6 py-3 rounded-lg'>
                                 Enter
                             </button>
                         </td>
