@@ -7,6 +7,7 @@ import Register from "./Components/User/Register"
 import Home from "./Components/Home"
 import CreateProduct from "./Components/Product/CreateProduct"
 import CreateAuction from "./Components/Auction/CreateAuction"
+import Auctions from "./Components/Auction/Auctions"
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/create-product" element={<CreateProduct />} />
           <Route path="/create-auction" element={<CreateAuction />} />
+          <Route path="/auctions" element={<Auctions />} />
         </Routes>
       </BrowserRouter>
     </>
