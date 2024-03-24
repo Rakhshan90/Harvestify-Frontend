@@ -24,9 +24,9 @@ const Navbar = () => {
                     {/* container for menu items */}
                     <div className="hidden lg:flex space-x-8 font-bold">
                         <Link to='/' className="text-grayishBlue hover:text-teal-500">Home</Link>
-                        <a href="#" className="text-grayishBlue hover:text-teal-500">Products</a>
+                        <Link to='/products' className="text-grayishBlue hover:text-teal-500">Products</Link>
                         <Link to='/create-product' className="text-grayishBlue hover:text-teal-500">Create-Product</Link>
-                        <a href="#" className="text-grayishBlue hover:text-teal-500">Auctions</a>
+                        <Link to='/auctions' className="text-grayishBlue hover:text-teal-500">Auctions</Link>
                         <Link to='/create-auction' className="text-grayishBlue hover:text-teal-500">
                             Create-Auction
                         </Link>
@@ -72,9 +72,9 @@ const Navbar = () => {
     rounded-lg bg-slate-700`}>
                 <div className="flex flex-col space-y-6 justify-center items-center font-bold text-white w-full">
                     <Link to='/' className="w-full text-center">Home</Link>
-                    <a href="#" className="w-full text-center">Products</a>
+                    <Link to='/products' className="w-full text-center">Products</Link>
                     <Link to='/create-product' className="w-full text-center">Create-Product</Link>
-                    <a href="#" className="w-full text-center">Auctions</a>
+                    <Link to='/auctions' className="w-full text-center">Auctions</Link>
                     <Link to='/create-auction' className="w-full text-center">Create-Auction</Link>
                     <Link to='/login' className="w-full pt-6 border-t border-slate-400 text-center">
                         Login
