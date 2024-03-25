@@ -5,6 +5,13 @@ import Navbar from "./Components/Navigation/Navbar"
 import Login from "./Components/User/Login"
 import Register from "./Components/User/Register"
 import Home from "./Components/Home"
+import CreateProduct from "./Components/Product/CreateProduct"
+import CreateAuction from "./Components/Auction/CreateAuction"
+import Auctions from "./Components/Auction/Auctions"
+import Auction from "./Components/Auction/Auction"
+import ProductList from "./Components/Product/ProductList"
+import Product from "./Components/Product/Product"
+import UpdateProduct from "./Components/Product/UpdateProduct"
 
 function App() {
 
@@ -16,6 +23,13 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/create-product" element={<CreateProduct />} />
+          <Route path="/create-auction" element={<CreateAuction />} />
+          <Route path="/auctions" element={<Auctions />} />
+          <Route path="/auction/:id" element={<Auction />} />
+          <Route path="/products" element={<ProductList />} />
+          <Route path="/product/:id" element={<Product />} />
+          <Route path="/update-product/:id" element={<UpdateProduct />} />
         </Routes>
       </BrowserRouter>
     </>
