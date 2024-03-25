@@ -31,7 +31,21 @@ export const userLoginAction = createAsyncThunk('users/login',
         };
         try {
             const {data} = await axios.post(`${baseUrl}/users/login`, user, config);
+            //save user into local storage
+            localStorage.setItem('userInfo', JSON.stringify(data));
             return data;
+        } catch (error) {
+            // frontend error if any
+            if(!error?.response) throw error;
+            // server error
+            else return rejectWithValue(error?.response?.data);
+        }
+    });
+// Logout action
+export const userLogoutAction = createAsyncThunk('users/logout',
+    async (payload, { rejectWithValue, getState, dispatch }) => {
+        try {
+            localStorage.removeItem('userInfo');
         } catch (error) {
             // frontend error if any
             if(!error?.response) throw error;
@@ -82,6 +96,23 @@ const usersSlices = createSlice({
             state.serverErr = undefined;
         });
         builder.addCase(userLoginAction.rejected, (state, action)=>{
+            state.loading = false;
+            state.appErr = action?.payload?.message;
+            state.serverErr = action?.error?.message;
+        });
+        // Logout
+        builder.addCase(userLogoutAction.pending, (state, action)=>{
+            state.loading = true;
+            state.appErr = undefined;
+            state.serverErr = undefined;
+        });
+        builder.addCase(userLogoutAction.fulfilled, (state, action)=>{
+            state.loading = false;
+            state.userAuth = undefined;
+            state.appErr = undefined;
+            state.serverErr = undefined;
+        });
+        builder.addCase(userLogoutAction.rejected, (state, action)=>{
             state.loading = false;
             state.appErr = action?.payload?.message;
             state.serverErr = action?.error?.message;

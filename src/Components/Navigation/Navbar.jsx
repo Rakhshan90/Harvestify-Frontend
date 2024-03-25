@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import darkMode from '../dark_mode.png'
 import lightMode from '../light_mode.png'
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { userLogoutAction } from '../../redux/slices/users/usersSlices';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -13,6 +15,9 @@ const Navbar = () => {
         setThemeIcon(!themeIcon);
         document.documentElement.classList.toggle('dark');
     }
+    const dispatch = useDispatch();
+    const user = useSelector(store => store?.users);
+    const { userAuth, appErr, serverErr, loading } = user;
     return (
         <nav className="relative mx-auto p-6 dark:bg-slate-800 dark:text-white">
             {/* flex container */}
@@ -41,12 +46,21 @@ const Navbar = () => {
                     </div>
 
                     {/* login and sign up */}
-                    <Link to='/login' className="text-grayishBlue hover:text-teal-500">
-                        Login
-                    </Link>
-                    <Link to='/register' className="bg-teal-500 text-white font-bold py-3 px-8 rounded-full hover:opacity-70">
-                        Sign up
-                    </Link>
+                    {!userAuth ? (
+                        <Link to='/login' className="text-grayishBlue hover:text-teal-500">
+                            Login
+                        </Link>
+                    ) : null}
+                    {userAuth ? (
+                        <button onClick={() => dispatch(userLogoutAction())}
+                            className="bg-teal-500 text-white font-bold py-3 px-8 rounded-full hover:opacity-70">
+                            Logout
+                        </button>
+                    ) : (
+                        <Link to='/register' className="bg-teal-500 text-white font-bold py-3 px-8 rounded-full hover:opacity-70">
+                            Sign up
+                        </Link>
+                    )}
                 </div>
 
                 {/* hamburger menu button */}
@@ -76,12 +90,21 @@ const Navbar = () => {
                     <Link to='/create-product' className="w-full text-center">Create-Product</Link>
                     <Link to='/auctions' className="w-full text-center">Auctions</Link>
                     <Link to='/create-auction' className="w-full text-center">Create-Auction</Link>
-                    <Link to='/login' className="w-full pt-6 border-t border-slate-400 text-center">
-                        Login
-                    </Link>
-                    <Link to='/register' className="bg-teal-500 py-3 px-8 rounded-full text-center">
-                        Sign up
-                    </Link>
+                    {!userAuth ? (
+                        <Link to='/login' className="w-full pt-6 border-t border-slate-400 text-center">
+                            Login
+                        </Link>
+                    ) : null}
+                    {userAuth ? (
+                        <button onClick={()=> dispatch(userLogoutAction())}  
+                        className="bg-teal-500 py-3 px-8 rounded-full text-center">
+                            Logout
+                        </button>
+                    ) : (
+                        <Link to='/register' className="bg-teal-500 py-3 px-8 rounded-full text-center">
+                            Sign up
+                        </Link>
+                    )}
                 </div>
             </div>
 
