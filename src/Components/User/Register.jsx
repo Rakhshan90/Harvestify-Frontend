@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from 'yup';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { userRegisterAction } from "../../redux/slices/users/usersSlices";
 
 // form schema 
 const formSchema = Yup.object({
@@ -30,10 +31,19 @@ const Register = () => {
       userType: '',
     },
     onSubmit: (values) => {
-      console.log(values);
+      dispatch(userRegisterAction(values));
     },
     validationSchema: formSchema,
   })
+
+  // select user registered data from redux store
+  const user = useSelector(store => store?.users)
+  const {loading, appErr, serverErr, registered} = user;
+
+  // navigate 
+  const navigate = useNavigate();
+  if(registered) navigate('/login');
+
   return (
     <div className="flex flex-wrap min-h-screen dark:bg-slate-800 dark:text-white">
       <div className="w-full p-4">
@@ -41,7 +51,9 @@ const Register = () => {
           <form onSubmit={formik.handleSubmit}>
             <h1 className="text-3xl font-bold font-heading mb-4">Sign up</h1>
             {/* display error */}
-
+            {appErr || serverErr ? (<div className="text-red-500">
+              {appErr} {serverErr} 
+            </div>) : null}
             <Link
               to="/login"
               className="inline-block text-gray-500 hover: transition duration-200 mb-8"
@@ -212,12 +224,22 @@ const Register = () => {
                 Forgot Password?
               </Link>
             </div>
-            <button
+            {loading? (
+              <button
+              disabled
               className="h-14 inline-flex items-center justify-center py-4 px-6 text-white font-bold font-heading rounded-full bg-teal-500 w-full text-center border border-teal-600 shadow hover:bg-teal-600 focus:ring focus:ring-teal-200 transition duration-200 mb-8"
               type="submit"
             >
-              Login
+              Loading
             </button>
+            ) : (
+              <button
+              className="h-14 inline-flex items-center justify-center py-4 px-6 text-white font-bold font-heading rounded-full bg-teal-500 w-full text-center border border-teal-600 shadow hover:bg-teal-600 focus:ring focus:ring-teal-200 transition duration-200 mb-8"
+              type="submit"
+            >
+              Sign up
+            </button>
+            )}
           </form>
         </div>
       </div>
