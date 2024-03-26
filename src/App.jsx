@@ -12,6 +12,8 @@ import Auction from "./Components/Auction/Auction"
 import ProductList from "./Components/Product/ProductList"
 import Product from "./Components/Product/Product"
 import UpdateProduct from "./Components/Product/UpdateProduct"
+import PrivateProtectRoute from "./Components/Navigation/ProtectedRoutes/PrivateProtectRoute"
+import AdminProtectRoute from "./Components/Navigation/ProtectedRoutes/AdminProtectRoute"
 
 function App() {
 
@@ -23,13 +25,22 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/create-product" element={<CreateProduct />} />
-          <Route path="/create-auction" element={<CreateAuction />} />
-          <Route path="/auctions" element={<Auctions />} />
-          <Route path="/auction/:id" element={<Auction />} />
           <Route path="/products" element={<ProductList />} />
           <Route path="/product/:id" element={<Product />} />
-          <Route path="/update-product/:id" element={<UpdateProduct />} />
+          <Route path="/create-product" element={<PrivateProtectRoute>
+            <CreateProduct />
+          </PrivateProtectRoute>} />
+          <Route path="/update-product/:id" element={<PrivateProtectRoute>
+            <UpdateProduct />
+          </PrivateProtectRoute>} />
+          <Route path="/auctions" element={<Auctions />} />
+          <Route path="/auction/:id" element={<PrivateProtectRoute>
+            <Auction />
+          </PrivateProtectRoute>} />
+          <Route path="/create-auction" element={<AdminProtectRoute>
+            <CreateAuction />
+          </AdminProtectRoute>} />
+
         </Routes>
       </BrowserRouter>
     </>
