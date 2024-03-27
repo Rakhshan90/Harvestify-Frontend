@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import headphone from './headphone.png'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchProductAction } from '../../redux/slices/products/productSlices'
+import { deleteProductAction, fetchProductAction } from '../../redux/slices/products/productSlices'
 
 const Product = () => {
     const dispatch = useDispatch();
@@ -13,8 +13,11 @@ const Product = () => {
         dispatch(fetchProductAction(id));
     }, [dispatch, id])
     const productDetails = useSelector(store => store?.products);
-    const { loading, appErr, serverErr, product } = productDetails;
-    console.log({ loading, appErr, serverErr, product });
+    const { loading, appErr, serverErr, product, isDeleted } = productDetails;
+    const user = useSelector(store => store?.users);
+    const { userAuth } = user;
+    if (isDeleted) navigate('/products');
+
     return (
         <div className="flex items-center justify-center bg-slate-100 dark:bg-slate-800 min-h-screen">
             {/* <!-- flex container --> */}
@@ -60,17 +63,31 @@ const Product = () => {
 
                             {/* <!-- stock --> */}
                             <div className="flex items-center space-x-3 group">
-                                <div className="h-3 w-3 rounded-full bg-green-400 group-hover:animate-ping"></div>
-                                <div className="text-sm">In stock</div>
+                                {product?.isActive ? (
+                                    <div className="h-3 w-3 rounded-full bg-green-400 group-hover:animate-ping"></div>
+                                ) : (
+                                    <div className="h-3 w-3 rounded-full bg-red-500 group-hover:animate-ping"></div>
+                                )}
+                                {product?.isActive ? (
+                                    <div className="text-sm">In stock</div>
+                                ) : (
+                                    <div className='text-sm'>Out of stock</div>
+                                )}
                             </div>
 
                             <div className="flex flex-col space-y-2 md:flex-row md:space-y-0 space-x-2">
-                                <button onClick={() => navigate('/update-product/:id')} className="flex justify-center items-center space-x-3 px-5 py-3 border-2 border-gray-300 rounded-lg shadow-sm hover:-translate-y-0.5 hover:shadow-lg transition-all duration-150 dark:text-gray-300">
-                                    <span>Edit</span>
-                                </button>
-                                <button className="flex justify-center items-center space-x-3 px-5 py-3 border-2 border-gray-300 rounded-lg shadow-sm hover:-translate-y-0.5 hover:shadow-lg transition-all duration-150 dark:text-gray-300">
-                                    <span>Delete</span>
-                                </button>
+                                {(userAuth?._id === product?.owner?._id) && (
+                                    <button onClick={() => navigate(`/update-product/${product?._id}`)} className="flex justify-center items-center space-x-3 px-5 py-3 border-2 border-gray-300 rounded-lg shadow-sm hover:-translate-y-0.5 hover:shadow-lg transition-all duration-150 dark:text-gray-300">
+                                        <span>Edit</span>
+                                    </button>
+                                )}
+                                {(userAuth?._id === product?.owner?._id) && (
+                                    <button
+                                        onClick={() => dispatch(deleteProductAction(id))}
+                                        className="flex justify-center items-center space-x-3 px-5 py-3 border-2 border-gray-300 rounded-lg shadow-sm hover:-translate-y-0.5 hover:shadow-lg transition-all duration-150 dark:text-gray-300">
+                                        <span>Delete</span>
+                                    </button>
+                                )}
                             </div>
                         </div>
                     </div>

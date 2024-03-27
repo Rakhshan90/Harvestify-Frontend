@@ -11,7 +11,6 @@ const ProductList = () => {
 
     const productsData = useSelector(store => store?.products);
     const { loading, appErr, serverErr, products } = productsData;
-    console.log({ loading, appErr, serverErr, products });
 
     useEffect(() => {
         dispatch(fetchProductsAction());
