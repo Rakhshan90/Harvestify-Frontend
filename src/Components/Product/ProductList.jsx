@@ -10,11 +10,13 @@ const ProductList = () => {
     const navigate = useNavigate();
 
     const productsData = useSelector(store => store?.products);
-    const { loading, appErr, serverErr, products } = productsData;
+    const { loading, appErr, serverErr, products, isCreated } = productsData;
 
     useEffect(() => {
         dispatch(fetchProductsAction());
     }, [dispatch])
+
+    if(isCreated) navigate('/auctions');
 
 
     return (
@@ -25,7 +27,7 @@ const ProductList = () => {
                 ) : products?.length <= 0 ? (
                     <div className='text-red-500'>No products</div>
                 ) : (products?.map(product => (
-                    <div className="flex flex-col rounded-xl">
+                    <div id={product?._id} className="flex flex-col rounded-xl">
                         {/* img */}
                         <div onClick={() => navigate(`/product/${product?._id}`)}
                             className='h-58 w-58'>
@@ -37,6 +39,9 @@ const ProductList = () => {
                         {/* product description */}
                         <p className="max-w-md text-sm text-gray-400 text-left">
                             {product?.description}
+                        </p>
+                        <p className="max-w-md text-sm text-gray-400 text-left">
+                            {product?._id}
                         </p>
                         {/* product price */}
                         <h3 className="text-lg font-mediumtext-left">{product?.quantity}</h3>
