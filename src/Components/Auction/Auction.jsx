@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { fetchAuctionAction, fetchBidsAction, placeBidAction } from '../../redux/slices/auctions/auctionSlices';
+import DateFormatter from '../../util/DateFormatter';
 
 // form schema
 const formSchema = Yup.object({
@@ -56,7 +57,7 @@ const Auction = () => {
                             Product
                         </h5>
                         {/* value */}
-                        <p className="sm text-center md:text-left">{singleAuction?.product}</p>
+                        <p className="sm text-center md:text-left">{singleAuction?.product?.product_name}</p>
                     </div>
                     <div className="flex justify-between px-5 py-2 bg-gray-50 
                 text-gray-500 dark:bg-gray-700 dark:text-gray-400">
@@ -74,7 +75,9 @@ const Auction = () => {
                             starting time
                         </h5>
                         {/* value */}
-                        <p className="sm text-center md:text-left">{singleAuction?.startTime}</p>
+                        <p className="sm text-center md:text-left">
+                            <DateFormatter date={singleAuction?.startTime} />
+                        </p>
                     </div>
                     <div className="flex justify-between px-5 py-2 bg-gray-50 
                 text-gray-500 dark:bg-gray-700 dark:text-gray-400">
@@ -83,7 +86,9 @@ const Auction = () => {
                             end time
                         </h5>
                         {/* value */}
-                        <p className="sm text-center md:text-left">{singleAuction?.endTime}</p>
+                        <p className="sm text-center md:text-left">
+                            <DateFormatter date={singleAuction?.endTime} />
+                        </p>
                     </div>
                     <div className="flex justify-between px-5 py-2 bg-gray-50 
                 text-gray-500 dark:bg-gray-700 dark:text-gray-400">
@@ -92,7 +97,7 @@ const Auction = () => {
                             Winner
                         </h5>
                         {/* value */}
-                        <p className="sm text-center md:text-left">{singleAuction?.winner}</p>
+                        <p className="sm text-center md:text-left">{singleAuction?.winner?.firstName}</p>
                     </div>
                     <div className="flex justify-between px-5 py-2 bg-gray-50 
                 text-gray-500 dark:bg-gray-700 dark:text-gray-400">

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 import { fetchAuctionsAction } from '../../redux/slices/auctions/auctionSlices';
 import { fetchProductsAction } from '../../redux/slices/products/productSlices';
+import DateFormatter from '../../util/DateFormatter';
 
 const Auctions = () => {
     const navigate = useNavigate();
@@ -61,12 +62,16 @@ const Auctions = () => {
                             <div className='text-2xl text-red-500'>No auctions found</div>
                         ) : auctions?.map(auction => (
                             <tr key={auction?._id} className='bg-white border-b dark:bg-gray-800 dark:border-gray-700'>
-                                <td className='px-6 py-4'>{auction?.product}</td>
+                                <td className='px-6 py-4'>{auction?.product?.product_name}</td>
                                 <td className='px-6 py-4'>{auction?.startingPrice}</td>
-                                <td className='px-6 py-4'>{auction?.startTime}</td>
-                                <td className='px-6 py-4'>{auction?.endTime}</td>
+                                <td className='px-6 py-4'>
+                                    <DateFormatter date={auction?.startTime} />
+                                </td>
+                                <td className='px-6 py-4'>
+                                    <DateFormatter date={auction?.endTime} />
+                                </td>
                                 <td className='px-6 py-4'>{auction?.currentBid}</td>
-                                <td className='px-6 py-4'>{auction?.winner}</td>
+                                <td className='px-6 py-4'>{auction?.winner?.firstName}</td>
                                 <td className='px-6 py-4'>
                                     {auction?.isActive ? (
                                         <button
