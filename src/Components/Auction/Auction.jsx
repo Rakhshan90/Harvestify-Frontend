@@ -1,12 +1,54 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom';
+import * as Yup from 'yup';
+import { useFormik } from 'formik';
+import { fetchAuctionAction, fetchBidsAction, placeBidAction } from '../../redux/slices/auctions/auctionSlices';
+
+// form schema
+const formSchema = Yup.object({
+    auctionId: Yup.string().required('Auction Id is required'),
+    bidAmount: Yup.string().required('Bid Amount is required'),
+})
 
 const Auction = () => {
+    const dispatch = useDispatch();
+    const location = useLocation();
+    const id = location.pathname.split('/')[2];
+    useEffect(() => {
+        dispatch(fetchAuctionAction(id));
+    }, [dispatch])
+
+    const auction = useSelector(store => store?.auctions);
+    const { loading, appErr, serverErr, singleAuction, bids, bid } = auction;
+
+    useEffect(() => {
+        dispatch(fetchBidsAction(id));
+    }, [dispatch, bid]);
+
+    const formik = useFormik({
+        enableReinitialize: true,
+        initialValues: {
+            auctionId: id,
+            bidAmount: '',
+        },
+        onSubmit: (values) => {
+            dispatch(placeBidAction(values));
+        },
+        validationSchema: formSchema
+    })
+
+
     return (
         <div className='min-h-screen p-6 md:p-12 mx-auto dark:bg-slate-800'>
             <div className="flex flex-col space-y-6 items-center md:flex-row md:space-y-0 md:space-x-6">
                 {/* item 1 - auction details */}
                 <div className="flex flex-col space-y-3 md:w-1/2 p-4 md:p-8 border border-gray-700 rounded-lg">
                     <h1 className="text-3xl font-bold font-heading mb-4 dark:text-white">Auction details</h1>
+                    {/* display error if any */}
+                    {appErr || serverErr ? (
+                        <div className='text-red-500'>{appErr} {serverErr}</div>
+                    ) : null}
                     <div className="flex justify-between px-5 py-2 bg-gray-50 
                 text-gray-500 dark:bg-gray-700 dark:text-gray-400">
                         {/* property */}
@@ -14,7 +56,7 @@ const Auction = () => {
                             Product
                         </h5>
                         {/* value */}
-                        <p className="sm text-center md:text-left">Rice</p>
+                        <p className="sm text-center md:text-left">{singleAuction?.product}</p>
                     </div>
                     <div className="flex justify-between px-5 py-2 bg-gray-50 
                 text-gray-500 dark:bg-gray-700 dark:text-gray-400">
@@ -23,7 +65,7 @@ const Auction = () => {
                             Starting price
                         </h5>
                         {/* value */}
-                        <p className="sm text-center md:text-left">1299</p>
+                        <p className="sm text-center md:text-left">{singleAuction?.startingPrice}</p>
                     </div>
                     <div className="flex justify-between px-5 py-2 bg-gray-50 
                 text-gray-500 dark:bg-gray-700 dark:text-gray-400">
@@ -32,7 +74,7 @@ const Auction = () => {
                             starting time
                         </h5>
                         {/* value */}
-                        <p className="sm text-center md:text-left">01 / 05 / 2024</p>
+                        <p className="sm text-center md:text-left">{singleAuction?.startTime}</p>
                     </div>
                     <div className="flex justify-between px-5 py-2 bg-gray-50 
                 text-gray-500 dark:bg-gray-700 dark:text-gray-400">
@@ -41,7 +83,7 @@ const Auction = () => {
                             end time
                         </h5>
                         {/* value */}
-                        <p className="sm text-center md:text-left">03 / 05 / 2024</p>
+                        <p className="sm text-center md:text-left">{singleAuction?.endTime}</p>
                     </div>
                     <div className="flex justify-between px-5 py-2 bg-gray-50 
                 text-gray-500 dark:bg-gray-700 dark:text-gray-400">
@@ -50,7 +92,7 @@ const Auction = () => {
                             Winner
                         </h5>
                         {/* value */}
-                        <p className="sm text-center md:text-left">null</p>
+                        <p className="sm text-center md:text-left">{singleAuction?.winner}</p>
                     </div>
                     <div className="flex justify-between px-5 py-2 bg-gray-50 
                 text-gray-500 dark:bg-gray-700 dark:text-gray-400">
@@ -59,7 +101,7 @@ const Auction = () => {
                             current bid
                         </h5>
                         {/* value */}
-                        <p className="sm text-center md:text-left">1599</p>
+                        <p className="sm text-center md:text-left">{singleAuction?.currentBid}</p>
                     </div>
                     <div className="flex justify-between px-5 py-2 bg-gray-50 
                 text-gray-500 dark:bg-gray-700 dark:text-gray-400">
@@ -68,7 +110,7 @@ const Auction = () => {
                             location
                         </h5>
                         {/* value */}
-                        <p className="sm text-center md:text-left">Lucknow</p>
+                        <p className="sm text-center md:text-left">{singleAuction?.location}</p>
                     </div>
                     <div className="flex justify-between px-5 py-2 bg-gray-50 
                 text-gray-500 dark:bg-gray-700 dark:text-gray-400">
@@ -77,7 +119,7 @@ const Auction = () => {
                             category
                         </h5>
                         {/* value */}
-                        <p className="sm text-center md:text-left">grains</p>
+                        <p className="sm text-center md:text-left">{singleAuction?.category}</p>
                     </div>
                 </div>
 
@@ -94,23 +136,26 @@ const Auction = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr className='bg-white border-b dark:bg-gray-800 dark:border-gray-700'>
-                                    <td className='px-6 py-4'>1399</td>
-                                    <td className='px-6 py-4'>shaz</td>
-                                </tr>
-                                <tr className='bg-white border-b dark:bg-gray-800 dark:border-gray-700'>
-                                    <td className='px-6 py-4'>1599</td>
-                                    <td className='px-6 py-4'>hassan</td>
-                                </tr>
+                                {bids?.length <= 0 ? (
+                                    <div className='text-red-500 text-left pt-4 pl-1'>No bids found</div>
+                                ) : bids?.map(bid => (
+                                    <tr key={bid?._id} className='bg-white border-b dark:bg-gray-800 dark:border-gray-700'>
+                                        <td className='px-6 py-4'>{bid?.amount}</td>
+                                        <td className='px-6 py-4'>{bid?.placedBy?.firstName}</td>
+                                    </tr>
+                                ))}
                             </tbody>
                         </table>
                     </div>
 
                     {/* place bid */}
-                    <form className='md:w-1/2 dark:text-white'>
+                    <form onSubmit={formik.handleSubmit} className='md:w-1/2 dark:text-white'>
                         <h1 className="text-3xl font-bold font-heading mb-4">Place Your Bid</h1>
                         <label htmlFor='auctionId' className="block text-sm font-medium mb-2">Auction Id</label>
                         <input
+                            value={formik.values.auctionId}
+                            onChange={formik.handleChange('auctionId')}
+                            onBlur={formik.handleBlur('auctionId')}
                             type="auctionId"
                             id="auctionId"
                             // {...formik.getFieldProps("email")}
@@ -124,6 +169,9 @@ const Auction = () => {
                         </div>)} */}
                         <label htmlFor='amount' className="block text-sm font-medium mb-2">Bid amount</label>
                         <input
+                            value={formik.values.bidAmount}
+                            onChange={formik.handleChange('bidAmount')}
+                            onBlur={formik.handleBlur('bidAmount')}
                             type="number"
                             id="amount"
                             // {...formik.getFieldProps("email")}

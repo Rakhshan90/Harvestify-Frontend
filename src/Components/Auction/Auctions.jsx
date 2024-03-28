@@ -57,9 +57,9 @@ const Auctions = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {auctions?.length <=0 ? (
+                        {auctions?.length <= 0 ? (
                             <div className='text-2xl text-red-500'>No auctions found</div>
-                        ) :  auctions?.map(auction => (
+                        ) : auctions?.map(auction => (
                             <tr key={auction?._id} className='bg-white border-b dark:bg-gray-800 dark:border-gray-700'>
                                 <td className='px-6 py-4'>{auction?.product}</td>
                                 <td className='px-6 py-4'>{auction?.startingPrice}</td>
@@ -69,15 +69,16 @@ const Auctions = () => {
                                 <td className='px-6 py-4'>{auction?.winner}</td>
                                 <td className='px-6 py-4'>
                                     {auction?.isActive ? (
-                                        <button onClick={() => navigate('/auction/:id')}
+                                        <button
+                                            onClick={() => navigate(`/auction/${auction?._id}`)}
                                             className='bg-teal-500 text-white font-medium text-sm px-6 py-3 rounded-lg'>
-                                            Open
+                                            Active
                                         </button>
                                     ) : (
                                         <button
-                                            disabled
+                                            onClick={() => navigate(`/auction/${auction?._id}`)}
                                             className='bg-red-500 text-white font-medium text-sm px-6 py-3 rounded-lg'>
-                                            Closed
+                                            Inactive
                                         </button>
                                     )}
                                 </td>
