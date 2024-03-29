@@ -17,6 +17,7 @@ import AdminProtectRoute from "./Components/Navigation/ProtectedRoutes/AdminProt
 import UpdatePassword from "./Components/User/UpdatePassword"
 import ForgotPassword from "./Components/User/ForgotPassword"
 import ResetPassword from "./Components/User/ResetPassword"
+import UpdateProfile from "./Components/User/UpdateProfie"
 
 function App() {
 
@@ -45,6 +46,9 @@ function App() {
           </AdminProtectRoute>} />
           <Route path="/update-password" element={<PrivateProtectRoute>
             <UpdatePassword />
+          </PrivateProtectRoute>} />
+          <Route path="/update-profile" element={<PrivateProtectRoute>
+            <UpdateProfile />
           </PrivateProtectRoute>} />
           <Route path="/forgot-password" element={
             <ForgotPassword />} />

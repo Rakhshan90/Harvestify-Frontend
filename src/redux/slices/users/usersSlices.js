@@ -4,6 +4,7 @@ import { baseUrl } from "../../../util/baseUrl";
 
 // reset update action to redirect
 const resetUpdatePasswordAction = createAction('users/reset-update-password');
+const resetUpdateProfileAction = createAction('users/reset-update-profile');
 
 // Register action
 export const userRegisterAction = createAsyncThunk('users/register',
@@ -14,11 +15,11 @@ export const userRegisterAction = createAsyncThunk('users/register',
             },
         };
         try {
-            const {data} = await axios.post(`${baseUrl}/users/register`, user, config);
+            const { data } = await axios.post(`${baseUrl}/users/register`, user, config);
             return data;
         } catch (error) {
             // frontend error if any
-            if(!error?.response) throw error;
+            if (!error?.response) throw error;
             // server error
             else return rejectWithValue(error?.response?.data);
         }
@@ -33,13 +34,13 @@ export const userLoginAction = createAsyncThunk('users/login',
             },
         };
         try {
-            const {data} = await axios.post(`${baseUrl}/users/login`, user, config);
+            const { data } = await axios.post(`${baseUrl}/users/login`, user, config);
             //save user into local storage
             localStorage.setItem('userInfo', JSON.stringify(data));
             return data;
         } catch (error) {
             // frontend error if any
-            if(!error?.response) throw error;
+            if (!error?.response) throw error;
             // server error
             else return rejectWithValue(error?.response?.data);
         }
@@ -51,7 +52,7 @@ export const userLogoutAction = createAsyncThunk('users/logout',
             localStorage.removeItem('userInfo');
         } catch (error) {
             // frontend error if any
-            if(!error?.response) throw error;
+            if (!error?.response) throw error;
             // server error
             else return rejectWithValue(error?.response?.data);
         }
@@ -61,7 +62,7 @@ export const userLogoutAction = createAsyncThunk('users/logout',
 export const userUpdatePasswordAction = createAsyncThunk('users/update-password',
     async (password, { rejectWithValue, getState, dispatch }) => {
         const user = getState()?.users;
-        const {userAuth} = user;
+        const { userAuth } = user;
         // config
         const config = {
             headers: {
@@ -69,12 +70,12 @@ export const userUpdatePasswordAction = createAsyncThunk('users/update-password'
             },
         };
         try {
-            const {data} = await axios.put(`${baseUrl}/users/update/password`, password, config);
+            const { data } = await axios.put(`${baseUrl}/users/update/password`, password, config);
             dispatch(resetUpdatePasswordAction());
             return data;
         } catch (error) {
             // frontend error if any
-            if(!error?.response) throw error;
+            if (!error?.response) throw error;
             // server error
             else return rejectWithValue(error?.response?.data);
         }
@@ -90,11 +91,11 @@ export const userForgotPasswordAction = createAsyncThunk('users/forgot-password'
             },
         };
         try {
-            const {data} = await axios.post(`${baseUrl}/users/forgot-password`, email, config);
+            const { data } = await axios.post(`${baseUrl}/users/forgot-password`, email, config);
             return data;
         } catch (error) {
             // frontend error if any
-            if(!error?.response) throw error;
+            if (!error?.response) throw error;
             // server error
             else return rejectWithValue(error?.response?.data);
         }
@@ -110,11 +111,34 @@ export const userResetPasswordAction = createAsyncThunk('users/reset-password',
             },
         };
         try {
-            const {data} = await axios.put(`${baseUrl}/users/reset-password`, payload, config);
+            const { data } = await axios.put(`${baseUrl}/users/reset-password`, payload, config);
             return data;
         } catch (error) {
             // frontend error if any
-            if(!error?.response) throw error;
+            if (!error?.response) throw error;
+            // server error
+            else return rejectWithValue(error?.response?.data);
+        }
+    });
+
+// update user profile action
+export const userUpdateProfileAction = createAsyncThunk('users/update-profile',
+    async (profile, { rejectWithValue, getState, dispatch }) => {
+        const user = getState()?.users;
+        const { userAuth } = user;
+        // config
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userAuth?.token}`,
+            },
+        };
+        try {
+            const { data } = await axios.put(`${baseUrl}/users/update`, profile, config);
+            dispatch(resetUpdateProfileAction());
+            return data;
+        } catch (error) {
+            // frontend error if any
+            if (!error?.response) throw error;
             // server error
             else return rejectWithValue(error?.response?.data);
         }
@@ -131,109 +155,130 @@ const usersSlices = createSlice({
         userAuth: userLoginFormStorage,
     },
     // redux's object method
-    extraReducers: (builder)=>{
+    extraReducers: (builder) => {
         // Register
-        builder.addCase(userRegisterAction.pending, (state, action)=>{
+        builder.addCase(userRegisterAction.pending, (state, action) => {
             state.loading = true;
             state.appErr = undefined;
             state.serverErr = undefined;
         });
-        builder.addCase(userRegisterAction.fulfilled, (state, action)=>{
+        builder.addCase(userRegisterAction.fulfilled, (state, action) => {
             state.loading = false;
             state.registered = action?.payload;
             state.appErr = undefined;
             state.serverErr = undefined;
         });
-        builder.addCase(userRegisterAction.rejected, (state, action)=>{
+        builder.addCase(userRegisterAction.rejected, (state, action) => {
             state.loading = false;
             state.appErr = action?.payload?.message;
             state.serverErr = action?.error?.message;
         });
         // Login
-        builder.addCase(userLoginAction.pending, (state, action)=>{
+        builder.addCase(userLoginAction.pending, (state, action) => {
             state.loading = true;
             state.appErr = undefined;
             state.serverErr = undefined;
         });
-        builder.addCase(userLoginAction.fulfilled, (state, action)=>{
+        builder.addCase(userLoginAction.fulfilled, (state, action) => {
             state.loading = false;
             state.userAuth = action?.payload;
             state.appErr = undefined;
             state.serverErr = undefined;
         });
-        builder.addCase(userLoginAction.rejected, (state, action)=>{
+        builder.addCase(userLoginAction.rejected, (state, action) => {
             state.loading = false;
             state.appErr = action?.payload?.message;
             state.serverErr = action?.error?.message;
         });
         // Logout
-        builder.addCase(userLogoutAction.pending, (state, action)=>{
+        builder.addCase(userLogoutAction.pending, (state, action) => {
             state.loading = true;
             state.appErr = undefined;
             state.serverErr = undefined;
         });
-        builder.addCase(userLogoutAction.fulfilled, (state, action)=>{
+        builder.addCase(userLogoutAction.fulfilled, (state, action) => {
             state.loading = false;
             state.userAuth = undefined;
             state.appErr = undefined;
             state.serverErr = undefined;
         });
-        builder.addCase(userLogoutAction.rejected, (state, action)=>{
+        builder.addCase(userLogoutAction.rejected, (state, action) => {
             state.loading = false;
             state.appErr = action?.payload?.message;
             state.serverErr = action?.error?.message;
         });
         // update password
-        builder.addCase(userUpdatePasswordAction.pending, (state, action)=>{
+        builder.addCase(userUpdatePasswordAction.pending, (state, action) => {
             state.loading = true;
             state.appErr = undefined;
             state.serverErr = undefined;
         });
-        builder.addCase(resetUpdatePasswordAction, (state, action)=>{
+        builder.addCase(resetUpdatePasswordAction, (state, action) => {
             state.isPasswordUpdated = true;
         })
-        builder.addCase(userUpdatePasswordAction.fulfilled, (state, action)=>{
+        builder.addCase(userUpdatePasswordAction.fulfilled, (state, action) => {
             state.loading = false;
             state.updatedPassword = action?.payload;
             state.isPasswordUpdated = false;
             state.appErr = undefined;
             state.serverErr = undefined;
         });
-        builder.addCase(userUpdatePasswordAction.rejected, (state, action)=>{
+        builder.addCase(userUpdatePasswordAction.rejected, (state, action) => {
             state.loading = false;
             state.appErr = action?.payload?.message;
             state.serverErr = action?.error?.message;
         });
         // forgot password
-        builder.addCase(userForgotPasswordAction.pending, (state, action)=>{
+        builder.addCase(userForgotPasswordAction.pending, (state, action) => {
             state.loading = true;
             state.appErr = undefined;
             state.serverErr = undefined;
         });
-        builder.addCase(userForgotPasswordAction.fulfilled, (state, action)=>{
+        builder.addCase(userForgotPasswordAction.fulfilled, (state, action) => {
             state.loading = false;
             state.forgotPassword = action?.payload;
             state.appErr = undefined;
             state.serverErr = undefined;
         });
-        builder.addCase(userForgotPasswordAction.rejected, (state, action)=>{
+        builder.addCase(userForgotPasswordAction.rejected, (state, action) => {
             state.loading = false;
             state.appErr = action?.payload?.message;
             state.serverErr = action?.error?.message;
         });
         // reset password
-        builder.addCase(userResetPasswordAction.pending, (state, action)=>{
+        builder.addCase(userResetPasswordAction.pending, (state, action) => {
             state.loading = true;
             state.appErr = undefined;
             state.serverErr = undefined;
         });
-        builder.addCase(userResetPasswordAction.fulfilled, (state, action)=>{
+        builder.addCase(userResetPasswordAction.fulfilled, (state, action) => {
             state.loading = false;
             state.resetPassword = action?.payload;
             state.appErr = undefined;
             state.serverErr = undefined;
         });
-        builder.addCase(userResetPasswordAction.rejected, (state, action)=>{
+        builder.addCase(userResetPasswordAction.rejected, (state, action) => {
+            state.loading = false;
+            state.appErr = action?.payload?.message;
+            state.serverErr = action?.error?.message;
+        });
+        // update user profile 
+        builder.addCase(userUpdateProfileAction.pending, (state, action) => {
+            state.loading = true;
+            state.appErr = undefined;
+            state.serverErr = undefined;
+        });
+        builder.addCase(resetUpdateProfileAction, (state, action)=>{
+            state.isProfileUpdated = true;
+        });
+        builder.addCase(userUpdateProfileAction.fulfilled, (state, action) => {
+            state.loading = false;
+            state.profile = action?.payload;
+            state.isProfileUpdated = false;
+            state.appErr = undefined;
+            state.serverErr = undefined;
+        });
+        builder.addCase(userUpdateProfileAction.rejected, (state, action) => {
             state.loading = false;
             state.appErr = action?.payload?.message;
             state.serverErr = action?.error?.message;
