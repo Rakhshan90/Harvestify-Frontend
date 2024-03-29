@@ -5,6 +5,7 @@ import { fetchAuctionsAction } from '../../redux/slices/auctions/auctionSlices';
 import { fetchProductsAction } from '../../redux/slices/products/productSlices';
 import DateFormatter from '../../util/DateFormatter';
 
+
 const Auctions = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -18,9 +19,10 @@ const Auctions = () => {
         <div className='min-h-screen mx-auto p-6 md:p-12 dark:bg-slate-800'>
             <div className="flex flex-col space-y-12">
                 {/* item 1 - location and category container */}
-                <div className="flex flex-col justify-between space-y-6 md:flex-row md:space-y-0">
+                {/* <div className="flex flex-col justify-between space-y-6 md:flex-row md:space-y-0"> */}
                     {/* location */}
-                    <select name="location" id="location"
+                    {/* <select
+                        name="location" id="location"
                         className='px-6 py-3 rounded-lg text-bold bg-gray-50 text-gray-700 dark:bg-gray-700 dark:text-gray-400'>
                         <option
                             value="location">Location</option>
@@ -28,16 +30,17 @@ const Auctions = () => {
                             value="lucknow">Lucknow</option>
                         <option
                             value="kanpur">Kanpur</option>
-                    </select>
+                    </select> */}
 
                     {/* category */}
-                    <select name="category" id="category"
+                    {/* <select
+                        name="category" id="category"
                         className='px-6 py-3 rounded-lg text-bold bg-gray-50 text-gray-700 dark:bg-gray-700 dark:text-gray-400'>
                         <option value="category">Category</option>
                         <option value="grains">Grains</option>
                         <option value="vegetables">Vegetables</option>
-                    </select>
-                </div>
+                    </select> */}
+                {/* </div> */}
                 {/* display error if any */}
                 {appErr || serverErr ? (
                     <div className='text-red-500'> {appErr} {serverErr} </div>
@@ -76,7 +79,7 @@ const Auctions = () => {
                                     {auction?.isActive ? (
                                         <button
                                             onClick={() => navigate(`/auction/${auction?._id}`)}
-                                            className='bg-teal-500 text-white font-medium text-sm px-6 py-3 rounded-lg'>
+                                            className='bg-teal-500 text-white font-medium text-sm px-8 py-3 rounded-lg'>
                                             Active
                                         </button>
                                     ) : (
