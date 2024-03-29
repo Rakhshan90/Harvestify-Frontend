@@ -4,7 +4,7 @@ import profileIcon from './profileIcon.png'
 import { Link } from 'react-router-dom'
 
 const links = [
-    { path: '/account-settings', label: 'Change your profile' },
+    { path: '/update-profile', label: 'Update your profile' },
     { path: '/update-password', label: 'Update your password' },
 ]
 
