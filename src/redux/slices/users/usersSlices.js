@@ -2,6 +2,9 @@ import { createAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from 'axios'
 import { baseUrl } from "../../../util/baseUrl";
 
+// reset update action to redirect
+const resetUpdatePasswordAction = createAction('users/reset-update-password');
+
 // Register action
 export const userRegisterAction = createAsyncThunk('users/register',
     async (user, { rejectWithValue, getState, dispatch }) => {
@@ -46,6 +49,69 @@ export const userLogoutAction = createAsyncThunk('users/logout',
     async (payload, { rejectWithValue, getState, dispatch }) => {
         try {
             localStorage.removeItem('userInfo');
+        } catch (error) {
+            // frontend error if any
+            if(!error?.response) throw error;
+            // server error
+            else return rejectWithValue(error?.response?.data);
+        }
+    });
+
+// update password action
+export const userUpdatePasswordAction = createAsyncThunk('users/update-password',
+    async (password, { rejectWithValue, getState, dispatch }) => {
+        const user = getState()?.users;
+        const {userAuth} = user;
+        // config
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userAuth?.token}`,
+            },
+        };
+        try {
+            const {data} = await axios.put(`${baseUrl}/users/update/password`, password, config);
+            dispatch(resetUpdatePasswordAction());
+            return data;
+        } catch (error) {
+            // frontend error if any
+            if(!error?.response) throw error;
+            // server error
+            else return rejectWithValue(error?.response?.data);
+        }
+    });
+
+// forgot password action
+export const userForgotPasswordAction = createAsyncThunk('users/forgot-password',
+    async (email, { rejectWithValue, getState, dispatch }) => {
+        // config
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+        try {
+            const {data} = await axios.post(`${baseUrl}/users/forgot-password`, email, config);
+            return data;
+        } catch (error) {
+            // frontend error if any
+            if(!error?.response) throw error;
+            // server error
+            else return rejectWithValue(error?.response?.data);
+        }
+    });
+
+// reset password action
+export const userResetPasswordAction = createAsyncThunk('users/reset-password',
+    async (payload, { rejectWithValue, getState, dispatch }) => {
+        // config
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+        try {
+            const {data} = await axios.put(`${baseUrl}/users/reset-password`, payload, config);
+            return data;
         } catch (error) {
             // frontend error if any
             if(!error?.response) throw error;
@@ -113,6 +179,61 @@ const usersSlices = createSlice({
             state.serverErr = undefined;
         });
         builder.addCase(userLogoutAction.rejected, (state, action)=>{
+            state.loading = false;
+            state.appErr = action?.payload?.message;
+            state.serverErr = action?.error?.message;
+        });
+        // update password
+        builder.addCase(userUpdatePasswordAction.pending, (state, action)=>{
+            state.loading = true;
+            state.appErr = undefined;
+            state.serverErr = undefined;
+        });
+        builder.addCase(resetUpdatePasswordAction, (state, action)=>{
+            state.isPasswordUpdated = true;
+        })
+        builder.addCase(userUpdatePasswordAction.fulfilled, (state, action)=>{
+            state.loading = false;
+            state.updatedPassword = action?.payload;
+            state.isPasswordUpdated = false;
+            state.appErr = undefined;
+            state.serverErr = undefined;
+        });
+        builder.addCase(userUpdatePasswordAction.rejected, (state, action)=>{
+            state.loading = false;
+            state.appErr = action?.payload?.message;
+            state.serverErr = action?.error?.message;
+        });
+        // forgot password
+        builder.addCase(userForgotPasswordAction.pending, (state, action)=>{
+            state.loading = true;
+            state.appErr = undefined;
+            state.serverErr = undefined;
+        });
+        builder.addCase(userForgotPasswordAction.fulfilled, (state, action)=>{
+            state.loading = false;
+            state.forgotPassword = action?.payload;
+            state.appErr = undefined;
+            state.serverErr = undefined;
+        });
+        builder.addCase(userForgotPasswordAction.rejected, (state, action)=>{
+            state.loading = false;
+            state.appErr = action?.payload?.message;
+            state.serverErr = action?.error?.message;
+        });
+        // reset password
+        builder.addCase(userResetPasswordAction.pending, (state, action)=>{
+            state.loading = true;
+            state.appErr = undefined;
+            state.serverErr = undefined;
+        });
+        builder.addCase(userResetPasswordAction.fulfilled, (state, action)=>{
+            state.loading = false;
+            state.resetPassword = action?.payload;
+            state.appErr = undefined;
+            state.serverErr = undefined;
+        });
+        builder.addCase(userResetPasswordAction.rejected, (state, action)=>{
             state.loading = false;
             state.appErr = action?.payload?.message;
             state.serverErr = action?.error?.message;

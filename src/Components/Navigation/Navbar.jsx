@@ -4,6 +4,7 @@ import lightMode from '../light_mode.png'
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { userLogoutAction } from '../../redux/slices/users/usersSlices';
+import MyMenu from '../../util/MyMenu';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -37,13 +38,16 @@ const Navbar = () => {
                         </Link>
                     </div>
                 </div>
-                {/* container for login/signup */}
+                {/* container for login/signup, menu and dark/light mode switch */}
                 <div className="hidden lg:flex space-x-6 items-center font-bold">
                     {/* dark mode toggle switch */}
                     <div onClick={toggleTheme} className='cursor-pointer'>
                         {themeIcon ? <img src={lightMode} className='invert' alt="" /> :
                             <img src={darkMode} alt="" />}
                     </div>
+
+                    {/* Menu */}
+                    <MyMenu />
 
                     {/* login and sign up */}
                     {!userAuth ? (
@@ -70,6 +74,9 @@ const Navbar = () => {
                         {themeIcon ? <img src={lightMode} className='invert' alt="" /> :
                             <img src={darkMode} alt="" />}
                     </div>
+
+                    {/* menu */}
+                    <MyMenu />
 
                     <button onClick={toggleEvent} id="menu-btn" type="button" className={
                         `block hamburger lg:hidden focus:outline-none ${isOpen ? 'open' : ''}`

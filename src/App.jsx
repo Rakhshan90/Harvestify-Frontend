@@ -14,6 +14,9 @@ import Product from "./Components/Product/Product"
 import UpdateProduct from "./Components/Product/UpdateProduct"
 import PrivateProtectRoute from "./Components/Navigation/ProtectedRoutes/PrivateProtectRoute"
 import AdminProtectRoute from "./Components/Navigation/ProtectedRoutes/AdminProtectRoute"
+import UpdatePassword from "./Components/User/UpdatePassword"
+import ForgotPassword from "./Components/User/ForgotPassword"
+import ResetPassword from "./Components/User/ResetPassword"
 
 function App() {
 
@@ -40,8 +43,15 @@ function App() {
           <Route path="/create-auction" element={<AdminProtectRoute>
             <CreateAuction />
           </AdminProtectRoute>} />
-
+          <Route path="/update-password" element={<PrivateProtectRoute>
+            <UpdatePassword />
+          </PrivateProtectRoute>} />
+          <Route path="/forgot-password" element={
+            <ForgotPassword />} />
+          <Route path="/reset-password/:token" element={
+            <ResetPassword />} />
         </Routes>
+
       </BrowserRouter>
     </>
   )
