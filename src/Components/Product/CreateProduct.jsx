@@ -1,16 +1,17 @@
 import { useFormik } from 'formik'
-import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup'
 import { createProductAction } from '../../redux/slices/products/productSlices';
 import { useNavigate } from 'react-router-dom';
+import Dropzone from 'react-dropzone';
 
 const formSchema = Yup.object({
     product_name: Yup.string().required('Product title is required'),
     price: Yup.string().required('Product price is required'),
     description: Yup.string().required('Product description is required'),
     quantity: Yup.string().required('Product quantity is required'),
-    isActive: Yup.boolean().required('Product status is required')
+    isActive: Yup.boolean().required('Product status is required'),
+    image: Yup.string().required('Product image is required'),
 });
 
 
@@ -24,17 +25,25 @@ const CreateProduct = () => {
             description: '',
             quantity: '',
             isActive: false,
+            image: '',
         },
         onSubmit: (values) => {
-            dispatch(createProductAction(values));
-            // console.log(values);
+            const data = {
+                product_name: values?.product_name,
+                price: values?.price,
+                description: values?.description,
+                quantity: values?.quantity,
+                isActive: values?.isActive,
+                image: values?.image,
+            }
+            dispatch(createProductAction(data));
         },
         validationSchema: formSchema,
     });
 
     const productData = useSelector(store => store?.products);
-    const {loading, appErr, serverErr, product} = productData;
-    if(product) navigate('/products');
+    const { loading, appErr, serverErr, isCreated } = productData;
+    if (isCreated) navigate('/products');
 
     return (
         <div className="min-h-screen dark:bg-slate-800 dark:text-white">
@@ -110,12 +119,37 @@ const CreateProduct = () => {
                             </div>
                         )}
                     </div>
-                    <div className="flex flex-col space-y-3">
-                        <label htmlFor="phone" className="block text-sm font-medium">Upload image</label>
-                        <input
-                            type="file"
-                            className="w-full rounded-full p-4 outline-none border border-gray-100 shadow placeholder-gray-500 focus:ring focus:ring-teal-200 transition duration-200 mb-1 dark:bg-slate-600
-                        dark:border-none dark:placeholder:text-slate-100"  />
+                    {/* Image component */}
+                    <label
+                        htmlFor="password"
+                        className="block text-sm font-medium mt-3 mb-2 text-gray-700"
+                    >
+                        Select image to upload
+                    </label>
+                    <div className="dropzone bg-black">
+                        <Dropzone
+                            onBlur={formik.handleBlur("image")}
+                            accept="image/jpeg, image/png"
+                            onDrop={acceptedFiles => {
+                                formik.setFieldValue("image", acceptedFiles[0]);
+                            }}
+                        >
+                            {({ getRootProps, getInputProps }) => (
+                                <div className="container">
+                                    <div
+                                        {...getRootProps({
+                                            className: "dropzone",
+                                            onDrop: event => event.stopPropagation(),
+                                        })}
+                                    >
+                                        <input {...getInputProps()} />
+                                        <p className="text-gray-300 text-lg cursor-pointer hover:text-gray-500">
+                                            Click here to select image
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
+                        </Dropzone>
                     </div>
                     <div className="flex space-x-3">
                         <label htmlFor="isAgreed" className="block text-sm font-medium">Check if your product is active?</label>
@@ -133,19 +167,19 @@ const CreateProduct = () => {
                         )}
                     </div>
 
-                    {loading? (
+                    {loading ? (
                         <button
-                        disabled
-                        type='submit'
-                        className='bg-teal-500 text-white px-8 py-3 font-medium text-xl rounded-full'>
-                        Loading, please wait a minute...
-                    </button>
+                            disabled
+                            type='submit'
+                            className='bg-teal-500 text-white px-8 py-3 font-medium text-xl rounded-full'>
+                            Loading, please wait a minute...
+                        </button>
                     ) : (
                         <button
-                        type='submit'
-                        className='bg-teal-500 text-white px-8 py-3 font-medium text-xl rounded-full'>
-                        Create
-                    </button>
+                            type='submit'
+                            className='bg-teal-500 text-white px-8 py-3 font-medium text-xl rounded-full'>
+                            Create
+                        </button>
                     )}
                 </form>
             </div>

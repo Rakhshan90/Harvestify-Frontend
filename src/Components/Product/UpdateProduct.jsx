@@ -121,12 +121,6 @@ const UpdateProduct = () => {
                             </div>
                         )}
                     </div>
-                    <div className="flex flex-col space-y-3">
-                        <label htmlFor="phone" className="block text-sm font-medium">Upload image</label>
-                        <input type="file" id='photo' name='photo'
-                            className="w-full rounded-full p-4 outline-none border border-gray-100 shadow placeholder-gray-500 focus:ring focus:ring-teal-200 transition duration-200 mb-1 dark:bg-slate-600
-                        dark:border-none dark:placeholder:text-slate-100"  />
-                    </div>
                     <div className="flex space-x-3">
                         <label htmlFor="isAgreed" className="block text-sm font-medium">Check if your product is active?</label>
                         <input

@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { fetchAuctionAction, fetchBidsAction, placeBidAction } from '../../redux/slices/auctions/auctionSlices';
 import DateFormatter from '../../util/DateFormatter';
+import { Scrollbars } from 'react-custom-scrollbars';
 
 // form schema
 const formSchema = Yup.object({
@@ -18,7 +19,7 @@ const Auction = () => {
     const id = location.pathname.split('/')[2];
     useEffect(() => {
         dispatch(fetchAuctionAction(id));
-    }, [dispatch])
+    }, [dispatch]);
 
     const auction = useSelector(store => store?.auctions);
     const { loading, appErr, serverErr, singleAuction, bids, bid } = auction;
@@ -133,24 +134,26 @@ const Auction = () => {
                     {/* all bid details */}
                     <div className="flex flex-col space-y-3">
                         <h1 className="text-3xl font-bold font-heading mb-4 dark:text-white">Bids</h1>
-                        <table className='w-full text-sm text-left text-gray-500 dark:text-gray-400'>
-                            <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
-                                <tr>
-                                    <th className='px-6 py-3'>amount</th>
-                                    <th className='px-6 py-3'>Placed by</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {bids?.length <= 0 ? (
-                                    <div className='text-red-500 text-left pt-4 pl-1'>No bids found</div>
-                                ) : bids?.map(bid => (
-                                    <tr key={bid?._id} className='bg-white border-b dark:bg-gray-800 dark:border-gray-700'>
-                                        <td className='px-6 py-4'>{bid?.amount}</td>
-                                        <td className='px-6 py-4'>{bid?.placedBy?.firstName}</td>
+                        <Scrollbars style={{height:150}}>
+                            <table className='w-full text-sm text-left text-gray-500 dark:text-gray-400'>
+                                <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
+                                    <tr>
+                                        <th className='px-6 py-3'>amount</th>
+                                        <th className='px-6 py-3'>Placed by</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {bids?.length <= 0 ? (
+                                        <div className='text-red-500 text-left pt-4 pl-1'>No bids found</div>
+                                    ) : bids?.map(bid => (
+                                        <tr key={bid?._id} className='bg-white border-b dark:bg-gray-800 dark:border-gray-700'>
+                                            <td className='px-6 py-4'>{bid?.amount}</td>
+                                            <td className='px-6 py-4'>{bid?.placedBy?.firstName}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </Scrollbars>
                     </div>
 
                     {/* place bid */}

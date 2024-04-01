@@ -4,6 +4,7 @@ import axios from 'axios';
 
 
 // reset actions to redirect
+const resetCreateProductAction = createAction('products/create-reset');
 const resetUpdateProductAction = createAction('products/update-reset');
 const resetDeleteProductAction = createAction('products/delete-reset');
 
@@ -19,7 +20,17 @@ export const createProductAction = createAsyncThunk('products/create',
             }
         }
         try {
-            const {data} = await axios.post(`${baseUrl}/products/create`, product, config);
+            // form data
+            const formData = new FormData();
+            formData.append('product_name', product?.product_name);
+            formData.append('price', product?.price);
+            formData.append('description', product?.description);
+            formData.append('quantity', product?.quantity);
+            formData.append('isActive', product?.isActive);
+            formData.append('image', product?.image);
+            const {data} = await axios.post(`${baseUrl}/products/create`, formData, config);
+            // dipatch reset create product action to redirect and navigate again to create product page
+            dispatch(resetCreateProductAction());
             return data;
         } catch (error) {
             // frontend error if any
@@ -128,9 +139,13 @@ const productSlices = createSlice({
             state.appErr = undefined;
             state.serverErr = undefined;
         });
+        builder.addCase(resetCreateProductAction, (state, action)=>{
+            state.isCreated = true;
+        });
         builder.addCase(createProductAction.fulfilled, (state, action)=>{
             state.loading = false;
             state.product = action?.payload;
+            state.isCreated = false;
             state.appErr = undefined;
             state.serverErr = undefined;
         });
