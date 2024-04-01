@@ -36,6 +36,9 @@ const Navbar = () => {
                         <Link to='/create-auction' className="text-grayishBlue hover:text-teal-500">
                             Create-Auction
                         </Link>
+                        <Link to='/users' className="text-grayishBlue hover:text-teal-500">
+                            Users
+                        </Link>
                     </div>
                 </div>
                 {/* container for login/signup, menu and dark/light mode switch */}
@@ -97,6 +100,7 @@ const Navbar = () => {
                     <Link to='/create-product' className="w-full text-center">Create-Product</Link>
                     <Link to='/auctions' className="w-full text-center">Auctions</Link>
                     <Link to='/create-auction' className="w-full text-center">Create-Auction</Link>
+                    <Link to='/users' className="w-full text-center">Users</Link>
                     {!userAuth ? (
                         <Link to='/login' className="w-full pt-6 border-t border-slate-400 text-center">
                             Login

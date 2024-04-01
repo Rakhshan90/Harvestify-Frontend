@@ -18,6 +18,8 @@ import UpdatePassword from "./Components/User/UpdatePassword"
 import ForgotPassword from "./Components/User/ForgotPassword"
 import ResetPassword from "./Components/User/ResetPassword"
 import UpdateProfile from "./Components/User/UpdateProfie"
+import UserList from "./Components/User/UserList"
+import ProfilePhotoUpload from "./Components/User/ProfilePhotoUpload"
 
 function App() {
 
@@ -54,8 +56,9 @@ function App() {
             <ForgotPassword />} />
           <Route path="/reset-password/:token" element={
             <ResetPassword />} />
+          <Route path="/users" element={<UserList />} />
+          <Route path="/profile-photo-upload" element={<ProfilePhotoUpload />} />
         </Routes>
-
       </BrowserRouter>
     </>
   )

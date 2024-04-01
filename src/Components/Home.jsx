@@ -1,7 +1,9 @@
 import React from 'react'
 import hero from './illustration-working.svg'
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+    const navigate = useNavigate();
     return (
         <>
     {/* // <!-- hero section --> */}
@@ -9,13 +11,16 @@ const Home = () => {
                 <div className="container flex flex-col-reverse mx-auto p-6 lg:px-12 lg:flex-row">
                     {/* <!-- content container --> */}
                     <div className="flex flex-col space-y-10 mb-44 lg:mt-16 lg:w-1/2 xl:mb-52">
-                        <h1 className="text-5xl text-center font-bold lg:text-6xl lg:max-w-md lg:text-left">More than just shorter links
+                        <h1 className="text-5xl text-center font-bold lg:text-6xl lg:max-w-lg lg:text-left">
+                            Welcome to E-auction platform
                         </h1>
-                        <p className="text-2xl text-gray-400 text-center lg:max-w-md lg:text-left">Build your brand's recognition and get
-                            detailed
-                            insights on how your links are performing.</p>
+                        <p className="text-2xl text-gray-400 text-center lg:max-w-md lg:text-left">
+                        Harvestify: Grow your success. Buy and sell agricultural products with ease. (Simple and benefit-oriented)
+                        </p>
                         <div className="mx-auto lg:mx-0">
-                            <button className="py-5 px-10 text-2xl bg-teal-500 text-white rounded-full hover:opacity-50">Get
+                            <button 
+                            onClick={()=> navigate('/auctions')}
+                            className="py-5 px-10 text-2xl bg-teal-500 text-white rounded-full hover:opacity-50">Get
                                 started</button>
                         </div>
                     </div>

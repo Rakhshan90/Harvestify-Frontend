@@ -1,14 +1,17 @@
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
-import profileIcon from './profileIcon.png'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const links = [
     { path: '/update-profile', label: 'Update your profile' },
     { path: '/update-password', label: 'Update your password' },
+    { path: '/profile-photo-upload', label: 'Upload profile photo' },
 ]
 
 function MyMenu() {
+    const users = useSelector(store => store?.users);
+    const {userAuth} = users;
     return (
         <Menu as="div" className="ml-3 relative z-10">
             {({ open }) => (
@@ -18,8 +21,7 @@ function MyMenu() {
                             <span className="sr-only">Open user menu</span>
                             <img
                                 className="h-8 w-8 rounded-full"
-                                // src={isLogin?.profilePhoto}
-                                src={profileIcon}
+                                src={userAuth?.profilePhoto}
                                 alt=""
                             />
                         </Menu.Button>
