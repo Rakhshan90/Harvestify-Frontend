@@ -78,7 +78,7 @@ const CreateAuction = () => {
                             value={formik.values.startTime}
                             onChange={formik.handleChange('startTime')}
                             onBlur={formik.handleBlur('startTime')}
-                            type="date" id='startTime' name='startTime'
+                            type="datetime-local" id='startTime' name='startTime'
                             className="w-full rounded-full p-4 outline-none border border-gray-100 shadow placeholder-gray-500 focus:ring focus:ring-teal-200 transition duration-200 mb-1 dark:bg-slate-600
                         dark:border-none dark:placeholder:text-slate-100"  />
                         {formik.touched.startTime && formik.errors.startTime && (
@@ -91,7 +91,7 @@ const CreateAuction = () => {
                             value={formik.values.endTime}
                             onChange={formik.handleChange('endTime')}
                             onBlur={formik.handleBlur('endTime')}
-                            type="date" id='endTime' name='endTime'
+                            type="datetime-local" id='endTime' name='endTime'
                             className="w-full rounded-full p-4 outline-none border border-gray-100 shadow placeholder-gray-500 focus:ring focus:ring-teal-200 transition duration-200 mb-1 dark:bg-slate-600
                         dark:border-none dark:placeholder:text-slate-100"  />
                         {formik.touched.endTime && formik.errors.endTime && (

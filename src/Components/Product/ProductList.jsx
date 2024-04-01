@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import wheat from './wheat.jpg'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchProductsAction } from '../../redux/slices/products/productSlices'
@@ -27,7 +26,7 @@ const ProductList = () => {
                 ) : products?.length <= 0 ? (
                     <div className='text-red-500'>No products</div>
                 ) : (products?.map(product => (
-                    <div id={product?._id} className="flex flex-col rounded-xl">
+                    <div key={product?._id} className="flex flex-col rounded-xl">
                         {/* img */}
                         <div onClick={() => navigate(`/product/${product?._id}`)}
                             className='h-58 w-58'>
