@@ -39,9 +39,6 @@ const ProductList = () => {
                         <p className="max-w-md text-sm text-gray-400 text-left">
                             {product?.description}
                         </p>
-                        <p className="max-w-md text-sm text-gray-400 text-left">
-                            {product?._id}
-                        </p>
                         {/* product price */}
                         <h3 className="text-lg font-mediumtext-left">{product?.quantity}</h3>
                     </div>

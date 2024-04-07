@@ -1,9 +1,10 @@
 import { useFormik } from 'formik';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup';
 import { createAuctionAction } from '../../redux/slices/auctions/auctionSlices';
+import { fetchProductAction } from '../../redux/slices/products/productSlices';
 
 
 const formSchema = Yup.object({
@@ -18,23 +19,32 @@ const formSchema = Yup.object({
 const CreateAuction = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
+    const id = location.pathname.split('/')[2];
+    useEffect(()=>{
+        dispatch(fetchProductAction(id));
+    }, [dispatch])
+    const productData = useSelector(store => store?.products);
+    const {product} = productData;
     const formik = useFormik({
         initialValues: {
-            product: '',
-            startingPrice: '',
+            product: id,
+            startingPrice: product?.price,
             startTime: '',
             endTime: '',
-            location: '',
+            location: product?.owner?.location,
             category: '',
         },
         onSubmit: (values) => {
             dispatch(createAuctionAction(values));
         },
-        validationSchema: formSchema
+        validationSchema: formSchema,
+        enableReinitialize: true,
     })
 
     const auctionData = useSelector(store => store?.auctions);
-    const { loading, appErr, serverErr, auction } = auctionData;
+    const { loading, appErr, serverErr, isCreated } = auctionData;
+    if(isCreated) navigate('/auctions')
 
     return (
         <div className="min-h-screen dark:bg-slate-800 dark:text-white">

@@ -24,6 +24,9 @@ const Auction = () => {
     const auction = useSelector(store => store?.auctions);
     const { loading, appErr, serverErr, singleAuction, bids, bid } = auction;
 
+    const user = useSelector(store => store?.users);
+    const { userAuth } = user;
+
     useEffect(() => {
         dispatch(fetchBidsAction(id));
     }, [dispatch, bid]);
@@ -134,7 +137,7 @@ const Auction = () => {
                     {/* all bid details */}
                     <div className="flex flex-col space-y-3">
                         <h1 className="text-3xl font-bold font-heading mb-4 dark:text-white">Bids</h1>
-                        <Scrollbars style={{height:150}}>
+                        <Scrollbars style={{ height: 150 }}>
                             <table className='w-full text-sm text-left text-gray-500 dark:text-gray-400'>
                                 <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
                                     <tr>
@@ -192,12 +195,13 @@ const Auction = () => {
                             {formik.errors.email}
                         </div>)} */}
 
-                        <button
-                            className="h-14 inline-flex items-center justify-center py-4 px-6 text-white font-bold font-heading rounded-full bg-teal-500 w-full text-center border border-teal-600 shadow hover:bg-teal-600 focus:ring focus:ring-teal-200 transition duration-200 my-6"
-                            type="submit"
-                        >
-                            Place Bid
-                        </button>
+                        {userAuth?.user_type === 'Buyer' &&
+                            <button
+                                className="h-14 inline-flex items-center justify-center py-4 px-6 text-white font-bold font-heading rounded-full bg-teal-500 w-full text-center border border-teal-600 shadow hover:bg-teal-600 focus:ring focus:ring-teal-200 transition duration-200 my-6"
+                                type="submit"
+                            >
+                                Place Bid
+                            </button>}
                     </form>
                 </div>
             </div>

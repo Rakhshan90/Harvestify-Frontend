@@ -5,10 +5,12 @@ import { baseUrl } from "../../../util/baseUrl";
 // reset update action to redirect
 const resetUpdatePasswordAction = createAction('users/reset-update-password');
 const resetUpdateProfileAction = createAction('users/reset-update-profile');
+const resetUpdateProfilePhotoAction = createAction('users/reset-update-profile-photo');
 
 // Register action
 export const userRegisterAction = createAsyncThunk('users/register',
     async (user, { rejectWithValue, getState, dispatch }) => {
+        console.log(user);
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -135,6 +137,74 @@ export const userUpdateProfileAction = createAsyncThunk('users/update-profile',
         try {
             const { data } = await axios.put(`${baseUrl}/users/update`, profile, config);
             dispatch(resetUpdateProfileAction());
+            return data;
+        } catch (error) {
+            // frontend error if any
+            if (!error?.response) throw error;
+            // server error
+            else return rejectWithValue(error?.response?.data);
+        }
+    });
+
+// fetch list of users action
+export const fetchUsersAction = createAsyncThunk('users/fetch-users',
+    async (users, { rejectWithValue, getState, dispatch }) => {
+        // config
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        };
+        try {
+            const { data } = await axios.get(`${baseUrl}/users`, config);
+            return data;
+        } catch (error) {
+            // frontend error if any
+            if (!error?.response) throw error;
+            // server error
+            else return rejectWithValue(error?.response?.data);
+        }
+    });
+
+// delete user action
+export const deleteUserAction = createAsyncThunk('users/delete-user',
+    async (id, { rejectWithValue, getState, dispatch }) => {
+        const user = getState()?.users;
+        const { userAuth } = user;
+        // config
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userAuth?.token}`,
+            },
+        };
+        try {
+            const { data } = await axios.delete(`${baseUrl}/users/delete/${id}`, config);
+            return data;
+        } catch (error) {
+            // frontend error if any
+            if (!error?.response) throw error;
+            // server error
+            else return rejectWithValue(error?.response?.data);
+        }
+    });
+
+// profile photo upload action
+export const profilePhotoUploadAction = createAsyncThunk('users/photo-upload',
+    async (userImg, { rejectWithValue, getState, dispatch }) => {
+        const user = getState()?.users;
+        const { userAuth } = user;
+        // config
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userAuth?.token}`,
+            },
+        };
+        try {
+            // form data
+            const formData = new FormData();
+            formData.append('image', userImg?.image)
+            const { data } = await axios.put(`${baseUrl}/users/photo-upload`, formData, config);
+            dispatch(resetUpdateProfilePhotoAction());
             return data;
         } catch (error) {
             // frontend error if any
@@ -279,6 +349,61 @@ const usersSlices = createSlice({
             state.serverErr = undefined;
         });
         builder.addCase(userUpdateProfileAction.rejected, (state, action) => {
+            state.loading = false;
+            state.appErr = action?.payload?.message;
+            state.serverErr = action?.error?.message;
+        });
+        // fetch users 
+        builder.addCase(fetchUsersAction.pending, (state, action) => {
+            state.loading = true;
+            state.appErr = undefined;
+            state.serverErr = undefined;
+        });
+        builder.addCase(fetchUsersAction.fulfilled, (state, action) => {
+            state.loading = false;
+            state.userList = action?.payload;
+            state.appErr = undefined;
+            state.serverErr = undefined;
+        });
+        builder.addCase(fetchUsersAction.rejected, (state, action) => {
+            state.loading = false;
+            state.appErr = action?.payload?.message;
+            state.serverErr = action?.error?.message;
+        });
+        // delete user 
+        builder.addCase(deleteUserAction.pending, (state, action) => {
+            state.loading = true;
+            state.appErr = undefined;
+            state.serverErr = undefined;
+        });
+        builder.addCase(deleteUserAction.fulfilled, (state, action) => {
+            state.loading = false;
+            state.deletedUser = action?.payload;
+            state.appErr = undefined;
+            state.serverErr = undefined;
+        });
+        builder.addCase(deleteUserAction.rejected, (state, action) => {
+            state.loading = false;
+            state.appErr = action?.payload?.message;
+            state.serverErr = action?.error?.message;
+        });
+        // profile photo upload 
+        builder.addCase(profilePhotoUploadAction.pending, (state, action) => {
+            state.loading = true;
+            state.appErr = undefined;
+            state.serverErr = undefined;
+        });
+        builder.addCase(resetUpdateProfilePhotoAction, (state, action)=>{
+            state.isUploaded = true;
+        });
+        builder.addCase(profilePhotoUploadAction.fulfilled, (state, action) => {
+            state.loading = false;
+            state.updatedUser = action?.payload;
+            state.isUploaded = false;
+            state.appErr = undefined;
+            state.serverErr = undefined;
+        });
+        builder.addCase(profilePhotoUploadAction.rejected, (state, action) => {
             state.loading = false;
             state.appErr = action?.payload?.message;
             state.serverErr = action?.error?.message;

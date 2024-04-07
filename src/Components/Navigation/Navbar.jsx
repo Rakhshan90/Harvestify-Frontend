@@ -26,15 +26,15 @@ const Navbar = () => {
                 {/* container for all items */}
                 <div className="flex items-center space-x-20">
                     {/* logo */}
-                    <h2 className="font-bold text-black dark:text-white text-4xl">Harvestify</h2>
+                    <h1 className="font-bold text-black dark:text-white text-4xl">Harvestify</h1>
                     {/* container for menu items */}
                     <div className="hidden lg:flex space-x-8 font-bold">
                         <Link to='/' className="text-grayishBlue hover:text-teal-500">Home</Link>
                         <Link to='/products' className="text-grayishBlue hover:text-teal-500">Products</Link>
                         <Link to='/create-product' className="text-grayishBlue hover:text-teal-500">Create-Product</Link>
                         <Link to='/auctions' className="text-grayishBlue hover:text-teal-500">Auctions</Link>
-                        <Link to='/create-auction' className="text-grayishBlue hover:text-teal-500">
-                            Create-Auction
+                        <Link to='/users' className="text-grayishBlue hover:text-teal-500">
+                            Users
                         </Link>
                     </div>
                 </div>
@@ -67,8 +67,8 @@ const Navbar = () => {
                     )}
                 </div>
 
-                {/* hamburger menu button */}
-                <div className='flex space-x-4 lg:hidden'>
+                {/* theme toggle, profile menu, and hamburger button container */}
+                <div className='flex items-center space-x-4 lg:hidden'>
                     {/* dark mode toggle switch */}
                     <div onClick={toggleTheme} className='cursor-pointer lg:hidden'>
                         {themeIcon ? <img src={lightMode} className='invert' alt="" /> :
@@ -96,7 +96,7 @@ const Navbar = () => {
                     <Link to='/products' className="w-full text-center">Products</Link>
                     <Link to='/create-product' className="w-full text-center">Create-Product</Link>
                     <Link to='/auctions' className="w-full text-center">Auctions</Link>
-                    <Link to='/create-auction' className="w-full text-center">Create-Auction</Link>
+                    <Link to='/users' className="w-full text-center">Users</Link>
                     {!userAuth ? (
                         <Link to='/login' className="w-full pt-6 border-t border-slate-400 text-center">
                             Login

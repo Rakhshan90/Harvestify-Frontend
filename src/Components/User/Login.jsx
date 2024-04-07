@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from 'yup';
 import { userLoginAction } from "../../redux/slices/users/usersSlices";
+import { useState } from "react";
 
 // form schema
 const formSchema = Yup.object({
@@ -11,7 +12,10 @@ const formSchema = Yup.object({
 });
 
 const Login = () => {
-
+  const [type, setType] = useState('password');
+  const clickHandler = () => {
+    type === 'password' ? setType('text') : setType('password');
+  }
   const dispatch = useDispatch();
 
   const formik = useFormik({
@@ -27,10 +31,10 @@ const Login = () => {
 
   // select logged-in user data from redux store
   const user = useSelector(store => store?.users);
-  const {loading, appErr, serverErr, userAuth} = user;
+  const { loading, appErr, serverErr, userAuth } = user;
 
   const navigate = useNavigate();
-  if(userAuth) navigate('/');
+  if (userAuth) navigate('/');
   return (
     <div className="flex flex-wrap min-h-screen dark:bg-slate-800 dark:text-white">
       <div className="w-full  p-4">
@@ -69,7 +73,7 @@ const Login = () => {
             <label className="block text-sm font-medium mb-2">Password</label>
             <div className="flex items-center gap-1 w-full rounded-full p-4 border border-gray-100 shadow mb-3">
               <input
-                type="password"
+                type={type}
                 value={formik.values.password}
                 onChange={formik.handleChange('password')}
                 onBlur={formik.handleBlur('password')}
@@ -78,6 +82,8 @@ const Login = () => {
                 placeholder="Enter password"
               />
               <svg
+                onClick={clickHandler}
+                className="cursor-pointer"
                 xmlns="http://www.w3.org/2000/svg"
                 width={24}
                 height={24}
@@ -107,19 +113,19 @@ const Login = () => {
             </div>
             {loading ? (
               <button
-              disabled
-              className="h-14 inline-flex items-center justify-center py-4 px-6 text-white font-bold font-heading rounded-full bg-teal-500 w-full text-center border border-teal-600 shadow hover:bg-teal-600 focus:ring focus:ring-teal-200 transition duration-200 mb-8"
-              type="submit"
-            >
-              Loading, please wait a minute...
-            </button>
+                disabled
+                className="h-14 inline-flex items-center justify-center py-4 px-6 text-white font-bold font-heading rounded-full bg-teal-500 w-full text-center border border-teal-600 shadow hover:bg-teal-600 focus:ring focus:ring-teal-200 transition duration-200 mb-8"
+                type="submit"
+              >
+                Loading, please wait a minute...
+              </button>
             ) : (
               <button
-              className="h-14 inline-flex items-center justify-center py-4 px-6 text-white font-bold font-heading rounded-full bg-teal-500 w-full text-center border border-teal-600 shadow hover:bg-teal-600 focus:ring focus:ring-teal-200 transition duration-200 mb-8"
-              type="submit"
-            >
-              Login
-            </button>
+                className="h-14 inline-flex items-center justify-center py-4 px-6 text-white font-bold font-heading rounded-full bg-teal-500 w-full text-center border border-teal-600 shadow hover:bg-teal-600 focus:ring focus:ring-teal-200 transition duration-200 mb-8"
+                type="submit"
+              >
+                Login
+              </button>
             )}
           </form>
         </div>
