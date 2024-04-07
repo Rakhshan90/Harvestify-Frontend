@@ -113,6 +113,27 @@ export const placeBidAction = createAsyncThunk('auctions/placeBid',
         }
     });
 
+// delete auction action
+export const deleteAuctionAction = createAsyncThunk('auctions/delete',
+    async (id, { rejectWithValue, getState, dispatch }) => {
+        const user = getState().users;
+        const { userAuth } = user;
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userAuth?.token}`
+            }
+        }
+        try {
+            const { data } = await axios.delete(`${baseUrl}/auctions/delete/${id}`, config);
+            return data;
+        } catch (error) {
+            // frontend error if any
+            if (!error?.response) throw error;
+            // server error
+            else return rejectWithValue(error?.response?.data);
+        }
+    });
+
 // auction slices
 const auctionSlices = createSlice({
     name: 'auctions',
@@ -203,6 +224,23 @@ const auctionSlices = createSlice({
             state.serverErr = undefined;
         });
         builder.addCase(placeBidAction.rejected, (state, action) => {
+            state.loading = false;
+            state.appErr = action?.payload?.message;
+            state.serverErr = action?.error?.message;
+        });
+        // delete auction
+        builder.addCase(deleteAuctionAction.pending, (state, action) => {
+            state.loading = true;
+            state.appErr = undefined;
+            state.serverErr = undefined;
+        });
+        builder.addCase(deleteAuctionAction.fulfilled, (state, action) => {
+            state.loading = false;
+            state.deletedAuction = action?.payload;
+            state.appErr = undefined;
+            state.serverErr = undefined;
+        });
+        builder.addCase(deleteAuctionAction.rejected, (state, action) => {
             state.loading = false;
             state.appErr = action?.payload?.message;
             state.serverErr = action?.error?.message;

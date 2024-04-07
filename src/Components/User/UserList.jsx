@@ -35,7 +35,6 @@ const UserList = () => {
                             <th className='px-6 py-3'>location</th>
                             <th className='px-6 py-3'>Gender</th>
                             <th className='px-6 py-3'>User type</th>
-                            <th className='px-6 py-3'>Status</th>
                             <th className='px-6 py-3'>Action</th>
                         </tr>
                     </thead>
@@ -50,17 +49,7 @@ const UserList = () => {
                                 <td className='px-6 py-4'>{user?.location}</td>
                                 <td className='px-6 py-4'>{user?.gender}</td>
                                 <td className='px-6 py-4'>{user?.user_type}</td>
-                                {user?.isBlocked ? (
-                                    <td className='px-6 py-4 text-red-500'>blocked</td>
-                                ) : (
-                                    <td className='px-6 py-4 text-teal-500'>not blocked</td>
-                                )}
                                 <td className='px-6 py-4 space-x-4'>
-                                    {<button
-                                        // onClick={() => navigate(`/auction/${auction?._id}`)}
-                                        className='bg-teal-500 text-white font-medium text-sm px-8 py-3 rounded-lg'>
-                                        Profile
-                                    </button>}
                                     {
                                         (userAuth?.isAdmin &&
                                             <button

@@ -20,6 +20,7 @@ import ResetPassword from "./Components/User/ResetPassword"
 import UpdateProfile from "./Components/User/UpdateProfie"
 import UserList from "./Components/User/UserList"
 import ProfilePhotoUpload from "./Components/User/ProfilePhotoUpload"
+import FarmerProtectRoute from "./Components/Navigation/ProtectedRoutes/FarmerProtectRoute"
 
 function App() {
 
@@ -33,17 +34,17 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/products" element={<ProductList />} />
           <Route path="/product/:id" element={<Product />} />
-          <Route path="/create-product" element={<PrivateProtectRoute>
+          <Route path="/create-product" element={<FarmerProtectRoute>
             <CreateProduct />
-          </PrivateProtectRoute>} />
-          <Route path="/update-product/:id" element={<PrivateProtectRoute>
+          </FarmerProtectRoute>} />
+          <Route path="/update-product/:id" element={<FarmerProtectRoute>
             <UpdateProduct />
-          </PrivateProtectRoute>} />
+          </FarmerProtectRoute>} />
           <Route path="/auctions" element={<Auctions />} />
           <Route path="/auction/:id" element={<PrivateProtectRoute>
             <Auction />
           </PrivateProtectRoute>} />
-          <Route path="/create-auction" element={<AdminProtectRoute>
+          <Route path="/create-auction/:id" element={<AdminProtectRoute>
             <CreateAuction />
           </AdminProtectRoute>} />
           <Route path="/update-password" element={<PrivateProtectRoute>

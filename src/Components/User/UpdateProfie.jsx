@@ -18,21 +18,23 @@ const formSchema = Yup.object({
 const UpdateProfile = () => {
 
   const dispatch = useDispatch();
-
+  const userData = useSelector(store => store?.users);
+  const {userAuth} = userData;
   const formik = useFormik({
     initialValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-      gender: '',
-      location: '',
+      firstName: userAuth?.firstName,
+      lastName: userAuth?.lastName,
+      email: userAuth?.email,
+      phone: userAuth?.phone,
+      gender: userAuth?.gender,
+      location: userAuth?.location,
     },
     onSubmit: (values) => {
       dispatch(userUpdateProfileAction(values));
     },
     validationSchema: formSchema,
-  })
+    enableReinitialize: true,
+  });
 
   // select user registered data from redux store
   const user = useSelector(store => store?.users)

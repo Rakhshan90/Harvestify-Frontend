@@ -55,9 +55,9 @@ const Product = () => {
                             </div>
                             <p className="text-5xl font-bold dark:text-white">{product?.price}</p>
                             <div className="group">
-                                <button onClick={() => navigate('/auctions')}
+                                <button onClick={() => navigate(`/create-auction/${id}`)}
                                     className="w-full bg-teal-700 text-white transition-all duration-150 border-b-8 border-b-teal-700 rounded-lg group-hover:border-t-8 group-hover:border-t-teal-700 group-hover:bg-teal-700 group-hover:border-b-0 group-hover:shadow-lg">
-                                    <div className="px-8 py-4 bg-teal-500 rounded-lg duration-150 group-hover:bg-teal-700 font-bold">Go to auction</div>
+                                    <div className="px-8 py-4 bg-teal-500 rounded-lg duration-150 group-hover:bg-teal-700 font-bold">Create Auction</div>
                                 </button>
                             </div>
 

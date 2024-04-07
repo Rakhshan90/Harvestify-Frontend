@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from "react-redux";
 import { userRegisterAction } from "../../redux/slices/users/usersSlices";
+import { useState } from "react";
 
 // form schema 
 const formSchema = Yup.object({
@@ -13,12 +14,16 @@ const formSchema = Yup.object({
   phone: Yup.string().required('phone is required'),
   gender: Yup.string().required('gender is required'),
   location: Yup.string().required('location is required'),
-  userType: Yup.string().required('user type is required'),
+  user_type: Yup.string().required('user type is required'),
 })
 
 
 const Register = () => {
 
+  const [type, setType] = useState('password');
+  const clickHandler = () => {
+    type === 'password' ? setType('text') : setType('password');
+  }
   const dispatch = useDispatch();
 
   const formik = useFormik({
@@ -30,7 +35,7 @@ const Register = () => {
       phone: '',
       gender: '',
       location: '',
-      userType: '',
+      user_type: '',
     },
     onSubmit: (values) => {
       dispatch(userRegisterAction(values));
@@ -40,11 +45,11 @@ const Register = () => {
 
   // select user registered data from redux store
   const user = useSelector(store => store?.users)
-  const {loading, appErr, serverErr, registered} = user;
+  const { loading, appErr, serverErr, registered } = user;
 
   // navigate 
   const navigate = useNavigate();
-  if(registered) navigate('/login');
+  if (registered) navigate('/login');
 
   return (
     <div className="flex flex-wrap min-h-screen dark:bg-slate-800 dark:text-white">
@@ -54,7 +59,7 @@ const Register = () => {
             <h1 className="text-3xl font-bold font-heading mb-4">Sign up</h1>
             {/* display error */}
             {appErr || serverErr ? (<div className="text-red-500">
-              {appErr} {serverErr} 
+              {appErr} {serverErr}
             </div>) : null}
             <Link
               to="/login"
@@ -120,7 +125,7 @@ const Register = () => {
             <label className="block text-sm font-medium mb-2">Password</label>
             <div className="flex items-center gap-1 w-full rounded-full p-4 border border-gray-100 shadow mb-3">
               <input
-                type="password"
+                type={type}
                 value={formik.values.password}
                 onChange={formik.handleChange('password')}
                 onBlur={formik.handleBlur('password')}
@@ -128,7 +133,9 @@ const Register = () => {
                 dark:border-none dark:placeholder:text-slate-100"
                 placeholder="Enter password"
               />
-              <svg
+              <svg 
+                onClick={clickHandler}
+                className="cursor-pointer"
                 xmlns="http://www.w3.org/2000/svg"
                 width={24}
                 height={24}
@@ -186,15 +193,16 @@ const Register = () => {
 
             {/* Gender */}
             <label className="block text-sm font-medium mb-2">Gender</label>
-            <input
-              type="text"
+            <select
               value={formik.values.gender}
               onChange={formik.handleChange('gender')}
-              onBlur={formik.handleBlur('gender')}
-              className="w-full rounded-full p-4 outline-none border border-gray-100 shadow placeholder-gray-500 focus:ring focus:ring-teal-200 transition duration-200 mb-1 dark:bg-slate-600
-              dark:border-none dark:placeholder:text-slate-100"
-              placeholder="Your gender"
-            />
+              className="w-full rounded-full p-4 outline-none border border-gray-100 shadow placeholder-gray-500 focus:ring focus:ring-teal-200 transition duration-200 mb-1 dark:bg-slate-600 dark:border-none dark:placeholder:text-slate-100"
+            >
+              <option value="">Select</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
             {formik.touched.gender && formik.errors.gender && (
               <div className="text-red-500 mb-4 mt-1">
                 {formik.errors.gender}
@@ -203,18 +211,18 @@ const Register = () => {
 
             {/* User type */}
             <label className="block text-sm font-medium mb-2">User Type</label>
-            <input
-              type="text"
-              value={formik.values.userType}
-              onChange={formik.handleChange('userType')}
-              onBlur={formik.handleBlur('userType')}
-              className="w-full rounded-full p-4 outline-none border border-gray-100 shadow placeholder-gray-500 focus:ring focus:ring-teal-200 transition duration-200 mb-1 dark:bg-slate-600
-              dark:border-none dark:placeholder:text-slate-100"
-              placeholder="Your user type"
-            />
-            {formik.touched.userType && formik.errors.userType && (
+            <select
+              value={formik.values.user_type}
+              onChange={formik.handleChange('user_type')}
+              className="w-full rounded-full p-4 outline-none border border-gray-100 shadow placeholder-gray-500 focus:ring focus:ring-teal-200 transition duration-200 mb-1 dark:bg-slate-600 dark:border-none dark:placeholder:text-slate-100"
+            >
+              <option value="">Select</option>
+              <option value="Farmer">Farmer</option>
+              <option value="Buyer">Buyer</option>
+            </select>
+            {formik.touched.user_type && formik.errors.user_type && (
               <div className="text-red-500 mb-4 mt-1">
-                {formik.errors.userType}
+                {formik.errors.user_type}
               </div>
             )}
 
@@ -226,21 +234,21 @@ const Register = () => {
                 Forgot Password?
               </Link>
             </div>
-            {loading? (
+            {loading ? (
               <button
-              disabled
-              className="h-14 inline-flex items-center justify-center py-4 px-6 text-white font-bold font-heading rounded-full bg-teal-500 w-full text-center border border-teal-600 shadow hover:bg-teal-600 focus:ring focus:ring-teal-200 transition duration-200 mb-8"
-              type="submit"
-            >
-              Loading
-            </button>
+                disabled
+                className="h-14 inline-flex items-center justify-center py-4 px-6 text-white font-bold font-heading rounded-full bg-teal-500 w-full text-center border border-teal-600 shadow hover:bg-teal-600 focus:ring focus:ring-teal-200 transition duration-200 mb-8"
+                type="submit"
+              >
+                Loading
+              </button>
             ) : (
               <button
-              className="h-14 inline-flex items-center justify-center py-4 px-6 text-white font-bold font-heading rounded-full bg-teal-500 w-full text-center border border-teal-600 shadow hover:bg-teal-600 focus:ring focus:ring-teal-200 transition duration-200 mb-8"
-              type="submit"
-            >
-              Sign up
-            </button>
+                className="h-14 inline-flex items-center justify-center py-4 px-6 text-white font-bold font-heading rounded-full bg-teal-500 w-full text-center border border-teal-600 shadow hover:bg-teal-600 focus:ring focus:ring-teal-200 transition duration-200 mb-8"
+                type="submit"
+              >
+                Sign up
+              </button>
             )}
           </form>
         </div>

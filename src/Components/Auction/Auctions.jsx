@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
-import { fetchAuctionsAction } from '../../redux/slices/auctions/auctionSlices';
+import { deleteAuctionAction, fetchAuctionsAction } from '../../redux/slices/auctions/auctionSlices';
 import { fetchProductsAction } from '../../redux/slices/products/productSlices';
 import DateFormatter from '../../util/DateFormatter';
 
@@ -9,19 +9,19 @@ import DateFormatter from '../../util/DateFormatter';
 const Auctions = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const auctionsData = useSelector(store => store?.auctions);
+    const { loading, appErr, serverErr, auctions, deletedAuction } = auctionsData;
     useEffect(() => {
         dispatch(fetchAuctionsAction());
-    }, [dispatch]);
-    const auctionsData = useSelector(store => store?.auctions);
-    const { loading, appErr, serverErr, auctions } = auctionsData;
+    }, [dispatch, deletedAuction]);
 
     return (
         <div className='min-h-screen mx-auto p-6 md:p-12 dark:bg-slate-800'>
             <div className="flex flex-col space-y-12">
                 {/* item 1 - location and category container */}
                 {/* <div className="flex flex-col justify-between space-y-6 md:flex-row md:space-y-0"> */}
-                    {/* location */}
-                    {/* <select
+                {/* location */}
+                {/* <select
                         name="location" id="location"
                         className='px-6 py-3 rounded-lg text-bold bg-gray-50 text-gray-700 dark:bg-gray-700 dark:text-gray-400'>
                         <option
@@ -32,8 +32,8 @@ const Auctions = () => {
                             value="kanpur">Kanpur</option>
                     </select> */}
 
-                    {/* category */}
-                    {/* <select
+                {/* category */}
+                {/* <select
                         name="category" id="category"
                         className='px-6 py-3 rounded-lg text-bold bg-gray-50 text-gray-700 dark:bg-gray-700 dark:text-gray-400'>
                         <option value="category">Category</option>
@@ -56,6 +56,7 @@ const Auctions = () => {
                             <th className='px-6 py-3'>Current Bid</th>
                             <th className='px-6 py-3'>Winnder</th>
                             <th className='px-6 py-3'>isActive</th>
+                            <th className='px-6 py-3'>Action</th>
                             <th className='px-6 py-3'>Location</th>
                             <th className='px-6 py-3'>Category</th>
                         </tr>
@@ -80,15 +81,22 @@ const Auctions = () => {
                                         <button
                                             onClick={() => navigate(`/auction/${auction?._id}`)}
                                             className='bg-teal-500 text-white font-medium text-sm px-8 py-3 rounded-lg'>
-                                            Active
+                                            Open
                                         </button>
                                     ) : (
                                         <button
                                             onClick={() => navigate(`/auction/${auction?._id}`)}
                                             className='bg-red-500 text-white font-medium text-sm px-6 py-3 rounded-lg'>
-                                            Inactive
+                                            Closed
                                         </button>
                                     )}
+                                </td>
+                                <td className='px-6 py-4'>
+                                    <button
+                                        onClick={() => dispatch(deleteAuctionAction(auction?._id))}
+                                        className='bg-red-500 text-white font-medium text-sm px-6 py-3 rounded-lg'>
+                                        Delete
+                                    </button>
                                 </td>
                                 <td className='px-6 py-4'>{auction?.location}</td>
                                 <td className='px-6 py-4'>{auction?.category}</td>
