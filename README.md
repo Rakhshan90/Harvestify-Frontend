@@ -9,6 +9,7 @@ Harvestify is an online auction platform built for efficiency and transparency. 
 
 
 ## Demo
+https://github.com/Rakhshan90/Harvestify-Frontend/assets/92143665/4903322a-1e16-44fc-a969-14527f1fcd7d
 
 
 # The Magic Behind Harvestify:
