@@ -1,6 +1,16 @@
 # HARVESTIFY: Full-stack Online auction system
 I built Harvestify, a MERN stack auction platform with custom bidding algorithms, designed to create a transparent and efficient experience for farmers and buyers in the agricultural sector.
 
+## Live Link:
+https://harvestify-orcin.vercel.app/
+
+
+## Back-end repository:
+The REST APIs are all derived from my backend application. Here is the link to the backend source code.
+```bash
+https://github.com/Rakhshan90/harvestify-backend
+```
+
 ## The Problem:
 Today's agricultural commerce relies heavily on offline auctions, often involving a middleman who connects farmers and buyers. This system adds unnecessary cost and creates an information gap between producers and consumers.
 
@@ -48,19 +58,6 @@ Harvestify empowers farmers and buyers to connect directly, fostering better com
 **Server:** MongoDB, ExpressJS, NodeJS, and SMTP server
 
 **Database:** MongoDb.
-
-## Live Link:
-"The live link will be made available as soon as possible."
-
-
-
-## Back-end repository:
-
-The REST APIs are all derived from my backend application. Here is the link to the backend source code.
-```bash
-https://github.com/Rakhshan90/harvestify-backend
-```
-
 
 
 ## Installation
