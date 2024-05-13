@@ -28,7 +28,7 @@ export const createProductAction = createAsyncThunk('products/create',
             formData.append('quantity', product?.quantity);
             formData.append('isActive', product?.isActive);
             formData.append('image', product?.image);
-            const {data} = await axios.post(`${baseUrl}/products/create`, formData, config);
+            const {data} = await axios.post(`${baseUrl}/api/products/create`, formData, config);
             // dipatch reset create product action to redirect and navigate again to create product page
             dispatch(resetCreateProductAction());
             return data;
@@ -50,7 +50,7 @@ export const fetchProductsAction = createAsyncThunk('products/fetchProducts',
             }
         }
         try {
-            const {data} = await axios.get(`${baseUrl}/products`, config);
+            const {data} = await axios.get(`${baseUrl}/api/products`, config);
             return data;
         } catch (error) {
             // frontend error if any
@@ -70,7 +70,7 @@ export const fetchProductAction = createAsyncThunk('products/fetchProduct',
             }
         }
         try {
-            const {data} = await axios.get(`${baseUrl}/products/${id}`, config);
+            const {data} = await axios.get(`${baseUrl}/api/products/${id}`, config);
             return data;
         } catch (error) {
             // frontend error if any
@@ -92,7 +92,7 @@ export const updateProductAction = createAsyncThunk('products/update',
             }
         }
         try {
-            const {data} = await axios.put(`${baseUrl}/products/${product?.id}`, product, config);
+            const {data} = await axios.put(`${baseUrl}/api/products/${product?.id}`, product, config);
             // dispatch update reset action to redirect
             dispatch(resetUpdateProductAction());
             return data;
@@ -116,7 +116,7 @@ export const deleteProductAction = createAsyncThunk('products/delete',
             }
         }
         try {
-            const {data} = await axios.delete(`${baseUrl}/products/${id}`, config);
+            const {data} = await axios.delete(`${baseUrl}/api/products/${id}`, config);
             // dispatch delete reset action to redirect
             dispatch(resetDeleteProductAction());
             return data;

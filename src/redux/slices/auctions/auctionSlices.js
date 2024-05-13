@@ -18,7 +18,7 @@ export const fetchAuctionsAction = createAsyncThunk('auctions/fetchAuctions',
             }
         }
         try {
-            const { data } = await axios.get(`${baseUrl}/auctions`, config);
+            const { data } = await axios.get(`${baseUrl}/api/auctions`, config);
             return data;
         } catch (error) {
             // frontend error if any
@@ -40,7 +40,7 @@ export const createAuctionAction = createAsyncThunk('auctions/create',
             }
         }
         try {
-            const { data } = await axios.post(`${baseUrl}/auctions/create`, auction, config);
+            const { data } = await axios.post(`${baseUrl}/api/auctions/create`, auction, config);
             // dispatch reset create auction action to redirect
             dispatch(resetCreateAuctionAction());
             return data;
@@ -61,7 +61,7 @@ export const fetchAuctionAction = createAsyncThunk('auctions/fetchAuction',
             }
         }
         try {
-            const { data } = await axios.get(`${baseUrl}/auctions/${id}`, config);
+            const { data } = await axios.get(`${baseUrl}/api/auctions/${id}`, config);
             return data;
         } catch (error) {
             // frontend error if any
@@ -82,7 +82,7 @@ export const fetchBidsAction = createAsyncThunk('auctions/fetchBids',
             }
         }
         try {
-            const { data } = await axios.get(`${baseUrl}/auctions/bids/${id}`, config);
+            const { data } = await axios.get(`${baseUrl}/api/auctions/bids/${id}`, config);
             return data;
         } catch (error) {
             // frontend error if any
@@ -103,7 +103,7 @@ export const placeBidAction = createAsyncThunk('auctions/placeBid',
             }
         }
         try {
-            const { data } = await axios.post(`${baseUrl}/auctions/place/bid`, bid, config);
+            const { data } = await axios.post(`${baseUrl}/api/auctions/place/bid`, bid, config);
             return data;
         } catch (error) {
             // frontend error if any
@@ -124,7 +124,7 @@ export const deleteAuctionAction = createAsyncThunk('auctions/delete',
             }
         }
         try {
-            const { data } = await axios.delete(`${baseUrl}/auctions/delete/${id}`, config);
+            const { data } = await axios.delete(`${baseUrl}/api/auctions/delete/${id}`, config);
             return data;
         } catch (error) {
             // frontend error if any

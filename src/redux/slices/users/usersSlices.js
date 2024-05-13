@@ -17,7 +17,7 @@ export const userRegisterAction = createAsyncThunk('users/register',
             },
         };
         try {
-            const { data } = await axios.post(`${baseUrl}/users/register`, user, config);
+            const { data } = await axios.post(`${baseUrl}/api/users/register`, user, config);
             return data;
         } catch (error) {
             // frontend error if any
@@ -36,7 +36,7 @@ export const userLoginAction = createAsyncThunk('users/login',
             },
         };
         try {
-            const { data } = await axios.post(`${baseUrl}/users/login`, user, config);
+            const { data } = await axios.post(`${baseUrl}/api/users/login`, user, config);
             //save user into local storage
             localStorage.setItem('userInfo', JSON.stringify(data));
             return data;
@@ -72,7 +72,7 @@ export const userUpdatePasswordAction = createAsyncThunk('users/update-password'
             },
         };
         try {
-            const { data } = await axios.put(`${baseUrl}/users/update/password`, password, config);
+            const { data } = await axios.put(`${baseUrl}/api/users/update/password`, password, config);
             dispatch(resetUpdatePasswordAction());
             return data;
         } catch (error) {
@@ -93,7 +93,7 @@ export const userForgotPasswordAction = createAsyncThunk('users/forgot-password'
             },
         };
         try {
-            const { data } = await axios.post(`${baseUrl}/users/forgot-password`, email, config);
+            const { data } = await axios.post(`${baseUrl}/api/users/forgot-password`, email, config);
             return data;
         } catch (error) {
             // frontend error if any
@@ -113,7 +113,7 @@ export const userResetPasswordAction = createAsyncThunk('users/reset-password',
             },
         };
         try {
-            const { data } = await axios.put(`${baseUrl}/users/reset-password`, payload, config);
+            const { data } = await axios.put(`${baseUrl}/api/users/reset-password`, payload, config);
             return data;
         } catch (error) {
             // frontend error if any
@@ -135,7 +135,7 @@ export const userUpdateProfileAction = createAsyncThunk('users/update-profile',
             },
         };
         try {
-            const { data } = await axios.put(`${baseUrl}/users/update`, profile, config);
+            const { data } = await axios.put(`${baseUrl}/api/users/update`, profile, config);
             dispatch(resetUpdateProfileAction());
             return data;
         } catch (error) {
@@ -156,7 +156,7 @@ export const fetchUsersAction = createAsyncThunk('users/fetch-users',
             },
         };
         try {
-            const { data } = await axios.get(`${baseUrl}/users`, config);
+            const { data } = await axios.get(`${baseUrl}/api/users`, config);
             return data;
         } catch (error) {
             // frontend error if any
@@ -178,7 +178,7 @@ export const deleteUserAction = createAsyncThunk('users/delete-user',
             },
         };
         try {
-            const { data } = await axios.delete(`${baseUrl}/users/delete/${id}`, config);
+            const { data } = await axios.delete(`${baseUrl}/api/users/delete/${id}`, config);
             return data;
         } catch (error) {
             // frontend error if any
@@ -203,7 +203,7 @@ export const profilePhotoUploadAction = createAsyncThunk('users/photo-upload',
             // form data
             const formData = new FormData();
             formData.append('image', userImg?.image)
-            const { data } = await axios.put(`${baseUrl}/users/photo-upload`, formData, config);
+            const { data } = await axios.put(`${baseUrl}/api/users/photo-upload`, formData, config);
             dispatch(resetUpdateProfilePhotoAction());
             return data;
         } catch (error) {
