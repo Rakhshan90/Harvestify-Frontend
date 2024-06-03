@@ -29,36 +29,36 @@ function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/products" element={<ProductList />} />
-          <Route path="/product/:id" element={<Product />} />
-          <Route path="/create-product" element={<FarmerProtectRoute>
+          <Route exact path="/" element={<Home />} />
+          <Route exact path="/login" element={<Login />} />
+          <Route exact path="/register" element={<Register />} />
+          <Route exact path="/products" element={<ProductList />} />
+          <Route exact path="/product/:id" element={<Product />} />
+          <Route exact path="/create-product" element={<FarmerProtectRoute>
             <CreateProduct />
           </FarmerProtectRoute>} />
-          <Route path="/update-product/:id" element={<FarmerProtectRoute>
+          <Route exact path="/update-product/:id" element={<FarmerProtectRoute>
             <UpdateProduct />
           </FarmerProtectRoute>} />
-          <Route path="/auctions" element={<Auctions />} />
-          <Route path="/auction/:id" element={<PrivateProtectRoute>
+          <Route exact path="/auctions" element={<Auctions />} />
+          <Route exact path="/auction/:id" element={<PrivateProtectRoute>
             <Auction />
           </PrivateProtectRoute>} />
-          <Route path="/create-auction/:id" element={<AdminProtectRoute>
+          <Route exact path="/create-auction/:id" element={<AdminProtectRoute>
             <CreateAuction />
           </AdminProtectRoute>} />
-          <Route path="/update-password" element={<PrivateProtectRoute>
+          <Route exact path="/update-password" element={<PrivateProtectRoute>
             <UpdatePassword />
           </PrivateProtectRoute>} />
-          <Route path="/update-profile" element={<PrivateProtectRoute>
+          <Route exact path="/update-profile" element={<PrivateProtectRoute>
             <UpdateProfile />
           </PrivateProtectRoute>} />
-          <Route path="/forgot-password" element={
+          <Route exact path="/forgot-password" element={
             <ForgotPassword />} />
-          <Route path="/reset-password/:token" element={
+          <Route exact path="/reset-password/:token" element={
             <ResetPassword />} />
-          <Route path="/users" element={<UserList />} />
-          <Route path="/profile-photo-upload" element={<ProfilePhotoUpload />} />
+          <Route exact path="/users" element={<UserList />} />
+          <Route exact path="/profile-photo-upload" element={<ProfilePhotoUpload />} />
         </Routes>
       </BrowserRouter>
     </>
