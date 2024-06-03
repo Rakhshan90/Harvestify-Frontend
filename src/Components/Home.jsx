@@ -108,7 +108,7 @@ const Home = () => {
             {/* footer section */}
             <section id="footer">
                 {/* <!-- footer section --> */}
-                <footer className="py-16 bg-slate-900">
+                <footer className="py-16 bg-slate-900 px-10">
                     <div className="container flex flex-col items-center 
                     justify-between space-y-16 mx-auto md:flex-row md:space-y-0 md:items-start">
 
