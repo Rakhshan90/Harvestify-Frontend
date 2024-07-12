@@ -10,7 +10,6 @@ const resetUpdateProfilePhotoAction = createAction('users/reset-update-profile-p
 // Register action
 export const userRegisterAction = createAsyncThunk('users/register',
     async (user, { rejectWithValue, getState, dispatch }) => {
-        console.log(user);
         const config = {
             headers: {
                 'Content-Type': 'application/json',
